@@ -36,24 +36,6 @@ export class Basket extends Model {
   userId: number;
 
   @Column({
-    allowNull: false,
-    type: Sequelize.INTEGER,
-  })
-  totalPrice: number;
-
-  @Column({
-    allowNull: false,
-    type: Sequelize.INTEGER,
-  })
-  totalDiscount: number;
-
-  @Column({
-    allowNull: false,
-    type: Sequelize.INTEGER,
-  })
-  finalPrice: number;
-
-  @Column({
     defaultValue: new Date(),
     allowNull: false,
     type: Sequelize.DATE,
@@ -73,4 +55,7 @@ export class Basket extends Model {
 
   @HasMany(() => BasketProduct, 'basketId')
   BasketProduct: BasketProduct[];
+
+  @HasOne(() => Order, 'basketId')
+  order: Order;
 }

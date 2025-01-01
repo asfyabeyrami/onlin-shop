@@ -46,7 +46,7 @@ export class Product extends Model {
   @ForeignKey(() => Category)
   @Column({
     type: Sequelize.BIGINT,
-    references: { model: 'Categories', key: 'id' },
+    references: { model: 'categories', key: 'id' },
   })
   categoryId: number;
 
@@ -58,9 +58,9 @@ export class Product extends Model {
 
   @Column({
     allowNull: false,
-    type: Sequelize.STRING,
+    type: Sequelize.INTEGER,
   })
-  pCode: string;
+  pCode: number;
 
   @Column({
     allowNull: false,
@@ -118,11 +118,11 @@ export class Product extends Model {
   basketProducts: BasketProduct[];
 
   @BelongsTo(() => Admin, 'adminId')
-  Admin: Admin;
+  admin: Admin;
 
   @BelongsTo(() => Brand, 'brandId')
-  Brand: Brand;
+  brand: Brand;
 
   @BelongsTo(() => Category, 'categoryId')
-  Category: Category;
+  category: Category;
 }

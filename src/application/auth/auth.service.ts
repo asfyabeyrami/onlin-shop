@@ -6,13 +6,16 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
+import { LoginAdminDto, RegisterAdminDto } from 'src/DTO/admin.dto';
 import { LoginUserDto, RegisterUserDto, UserDto } from 'src/DTO/user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly dataAccess: UserDataAccess,
+    private readonly userDataAccess: UserDataAccess,
+    private readonly adminDataAccess: AdminDataAccess,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -23,15 +26,21 @@ export class AuthService {
       throw new HttpException('همه فیلد ها الزامیست', 404);
     }
 
-    const userChecking = await this.dataAccess.findByMobile(mobile);
+    const mobileChecking = await this.userDataAccess.findByMobile(mobile);
 
-    if (userChecking) {
+    if (mobileChecking) {
       throw new HttpException('شماره مبایل تکراری میباشد', 404);
+    }
+
+    const passChecking = await this.userDataAccess.findByPass(password);
+
+    if (passChecking) {
+      throw new HttpException('پسورد تکراری میباشد', 404);
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await this.dataAccess.createUser(
+    const user = await this.userDataAccess.createUser(
       name,
       lastName,
       mobile,
@@ -50,7 +59,7 @@ export class AuthService {
       throw new HttpException('همه فیلد ها الزامیست', 404);
     }
 
-    const user = await this.dataAccess.findByMobile(mobile);
+    const user = await this.userDataAccess.findByMobile(mobile);
     if (!user) {
       throw new HttpException('کاربر وجود ندارد', 404);
     }
@@ -66,6 +75,64 @@ export class AuthService {
     const reslut = {
       status: 200,
       name: user.name,
+      error: null,
+      accessToken: token,
+    };
+    return reslut;
+  }
+
+  async registerAdmin(payload: RegisterAdminDto) {
+    const { userName, password } = payload;
+
+    if (!userName || !password) {
+      throw new HttpException('همه فیلد ها الزامیست', 404);
+    }
+
+    const adminChecking = await this.adminDataAccess.findByUserName(userName);
+    if (adminChecking) {
+      throw new HttpException('نام کاربری تکراری میباشد', 404);
+    }
+
+    const passChecking = await this.adminDataAccess.findByPass(password);
+    if (passChecking) {
+      throw new HttpException('پسورد تکراری میباشد', 404);
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const admin = await this.adminDataAccess.createAdmin(
+      userName,
+      hashedPassword,
+    );
+    return admin;
+  }
+
+  async loginAdmin(payload: LoginAdminDto): Promise<{
+    status: number;
+    massege?: string;
+    error?: string;
+  }> {
+    const { userName, password } = payload;
+    if (!userName || !password) {
+      throw new HttpException('همه فیلد ها الزامیست', 404);
+    }
+
+    const admin = await this.adminDataAccess.findByUserName(userName);
+    if (!admin) {
+      throw new HttpException('ادمین وجود ندارد', 404);
+    }
+
+    const passwordMatch = await bcrypt.compare(password, admin.password);
+    if (!passwordMatch) {
+      throw new HttpException('پسورد صحیح نمی باشد', 404);
+    }
+    const token = await this.jwtService.signAsync({
+      sub: admin.id,
+      userName: admin.userName,
+    });
+    const reslut = {
+      status: 200,
+      userName: admin.userName,
       error: null,
       accessToken: token,
     };

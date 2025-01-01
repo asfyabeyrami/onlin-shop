@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserDataAccess],
+  providers: [AuthService, UserDataAccess, AdminDataAccess],
 })
 export class AuthModule {}

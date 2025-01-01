@@ -74,11 +74,11 @@ export class User extends Model {
   // Relations
 
   @HasMany(() => Order, 'userId')
-  Order: Order[];
+  order: Order[];
 
   @HasMany(() => Basket, 'userId')
-  Basket: Basket[];
+  basket: Basket[];
 
   @HasMany(() => Address, 'userId')
-  Address: Address[];
+  address: Address[];
 }

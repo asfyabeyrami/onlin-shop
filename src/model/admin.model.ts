@@ -10,6 +10,7 @@ import {
 import Sequelize from 'sequelize';
 import { Product } from './products.model';
 import { Category } from './categories.model';
+import { Brand } from './brands.model';
 
 @Table({
   tableName: 'admins',
@@ -56,6 +57,9 @@ export class Admin extends Model {
   @HasMany(() => Product, 'adminId')
   Product: Product[];
 
+  @HasMany(() => Brand, 'adminId')
+  Brand: Brand[];
+
   @HasMany(() => Category, 'adminId')
-  children: Category[];
+  Category: Category[];
 }

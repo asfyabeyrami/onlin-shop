@@ -14,9 +14,10 @@ import Sequelize from 'sequelize';
 import { Admin } from './admin.model';
 import { Brand } from './brands.model';
 import { CatBrand } from './catBrand.model';
+import { Product } from './products.model';
 
 @Table({
-  tableName: 'Categories',
+  tableName: 'categories',
   paranoid: true,
   deletedAt: 'deletedAt',
 })
@@ -72,8 +73,11 @@ export class Category extends Model {
   children: Category[];
 
   @BelongsToMany(() => Brand, () => CatBrand)
-  Brand: Brand[];
+  brand: Brand[];
 
   @BelongsTo(() => Admin, 'adminId')
-  Admin: Admin;
+  bdmin: Admin;
+
+  @HasMany(() => Product, 'categoryId')
+  product: Product;
 }

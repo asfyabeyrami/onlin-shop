@@ -32,6 +32,20 @@ export class Province extends Model {
   })
   province: string;
 
+  @Column({
+    defaultValue: new Date(),
+    allowNull: false,
+    type: Sequelize.DATE,
+  })
+  createdAt: Date;
+
+  @Column({
+    defaultValue: new Date(),
+    allowNull: false,
+    type: Sequelize.DATE,
+  })
+  updatedAt: Date;
+
   // Relations
 
   @HasMany(() => City, 'provinceId')

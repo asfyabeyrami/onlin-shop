@@ -57,12 +57,12 @@ export class Address extends Model {
 
   // Relations
 
-  @BelongsTo(() => Order, 'addressId')
-  Order: Order;
+  @HasMany(() => Order, 'addressId')
+  Order: Order[];
 
   @BelongsTo(() => User, 'userId')
   User: User;
 
-  @BelongsTo(() => City, 'cityId')
-  City: City;
+  @HasMany(() => City, 'cityId')
+  City: City[];
 }

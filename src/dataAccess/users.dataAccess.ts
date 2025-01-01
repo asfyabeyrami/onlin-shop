@@ -35,6 +35,15 @@ export class UserDataAccess {
     return user;
   }
 
+  async findByPass(password: string): Promise<Models.User> {
+    const user = await Models.User.findOne({
+      where: {
+        password,
+      },
+    });
+    return user;
+  }
+
   async findAll(): Promise<Models.User[]> {
     return await Models.User.findAll({
       attributes: { exclude: ['password'] },
