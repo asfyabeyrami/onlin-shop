@@ -1,13 +1,59 @@
 import { Identifier } from 'sequelize';
 import * as Models from '../model/index';
+import { HttpException } from '@nestjs/common';
 
 export class UserDataAccess {
   tableName() {
     return Models.User.tableName;
   }
 
-  async createUser() {
-    const user = await Models.User.create({});
+  async createUser(
+    name: string,
+    lastName: string,
+    mobile: number,
+    password: string,
+  ): Promise<Models.User> {
+    const user = await Models.User.create({
+      name,
+      lastName,
+      mobile,
+      password,
+      isActive: true,
+    });
     return user;
+  }
+  async deActiveUser(id: number) {
+    return await Models.User.update({ isActive: false }, { where: { id } });
+  }
+
+  async findByMobile(mobile: number): Promise<Models.User> {
+    const user = await Models.User.findOne({
+      where: {
+        mobile,
+      },
+    });
+    return user;
+  }
+
+  async findAll(): Promise<Models.User[]> {
+    return await Models.User.findAll({
+      attributes: { exclude: ['password'] },
+    });
+  }
+
+  async findById(id: number): Promise<Models.User> {
+    const user = await Models.User.findByPk(id, {
+      attributes: { exclude: ['password'] },
+    });
+    return user;
+  }
+
+  async remove(id: number): Promise<void> {
+    const user = await Models.User.findByPk(id);
+    if (!user) {
+      throw new HttpException('user not found', 404);
+    } else {
+      await user.destroy();
+    }
   }
 }

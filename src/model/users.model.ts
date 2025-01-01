@@ -30,7 +30,7 @@ export class User extends Model {
     allowNull: false,
     type: Sequelize.STRING,
   })
-  Name: string;
+  name: string;
 
   @Column({
     allowNull: false,
@@ -46,17 +46,16 @@ export class User extends Model {
 
   @Column({
     allowNull: false,
-    type: Sequelize.INTEGER,
+    type: Sequelize.BIGINT,
     unique: true,
   })
   mobile: number;
 
   @Column({
     allowNull: false,
-    type: Sequelize.INTEGER,
-    unique: true,
+    type: Sequelize.BOOLEAN,
   })
-  isActive: number;
+  isActive: boolean;
 
   @Column({
     defaultValue: new Date(),

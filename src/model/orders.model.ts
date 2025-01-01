@@ -96,9 +96,9 @@ export class Order extends Model {
   @BelongsTo(() => User, 'userId')
   User: User;
 
-  @HasOne(() => Basket, { foreignKey: 'basketId' })
+  @BelongsTo(() => Basket, { foreignKey: 'basketId' })
   Basket: Basket;
 
-  @HasOne(() => Address, { foreignKey: 'addressId' })
+  @BelongsTo(() => Address, { foreignKey: 'addressId' })
   Address: Address;
 }

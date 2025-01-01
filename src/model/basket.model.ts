@@ -71,9 +71,6 @@ export class Basket extends Model {
   @BelongsTo(() => User, 'userId')
   User: User;
 
-  @BelongsTo(() => Order, 'orderId')
-  Order: Order;
-
-  @BelongsTo(() => BasketProduct, 'basketId')
-  BasketProduct: BasketProduct;
+  @HasMany(() => BasketProduct, 'basketId')
+  BasketProduct: BasketProduct[];
 }

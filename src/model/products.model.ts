@@ -16,7 +16,7 @@ import { Brand } from './brands.model';
 import { BasketProduct } from './basketProduct.model';
 
 @Table({
-  tableName: 'Products',
+  tableName: 'products',
   paranoid: true,
   deletedAt: 'deletedAt',
 })
@@ -114,8 +114,8 @@ export class Product extends Model {
 
   // Relations
 
-  @BelongsTo(() => BasketProduct, 'productId')
-  BasketProduct: BasketProduct;
+  @HasMany(() => BasketProduct, 'productId')
+  basketProducts: BasketProduct[];
 
   @BelongsTo(() => Admin, 'adminId')
   Admin: Admin;

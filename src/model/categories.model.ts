@@ -44,7 +44,7 @@ export class Category extends Model {
 
   @ForeignKey(() => Category)
   @Column({
-    allowNull: false,
+    allowNull: true,
     type: Sequelize.INTEGER,
   })
   fatherId: number;

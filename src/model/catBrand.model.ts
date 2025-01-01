@@ -15,7 +15,7 @@ import { Brand } from './brands.model';
 import { Category } from './categories.model';
 
 @Table({
-  tableName: 'Categories',
+  tableName: 'catBrand',
   paranoid: true,
   deletedAt: 'deletedAt',
 })

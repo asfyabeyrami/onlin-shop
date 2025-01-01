@@ -14,7 +14,7 @@ import { Province } from './provinces.model';
 import { Address } from './addresses.model';
 
 @Table({
-  tableName: 'addresses',
+  tableName: 'cities',
   paranoid: true,
   deletedAt: 'deletedAt',
 })
@@ -30,6 +30,7 @@ export class City extends Model {
   @ForeignKey(() => Province)
   @Column({
     type: Sequelize.BIGINT,
+    allowNull: true,
     references: { model: 'provinces', key: 'id' },
   })
   provinceId: number;
@@ -42,9 +43,9 @@ export class City extends Model {
 
   // Relations
 
-  @HasOne(() => Address, { foreignKey: 'cityId' })
-  Address: Address;
+  @HasMany(() => Address, { foreignKey: 'cityId' })
+  addresses: Address[];
 
   @BelongsTo(() => Province, 'provinceId')
-  Province: Province;
+  province: Province;
 }

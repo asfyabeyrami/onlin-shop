@@ -8,15 +8,11 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  // @Post()
-  // create(@Body()) {
-  //   return this.usersService.create();
-  // }
 
   @Get()
   findAll() {
@@ -24,17 +20,23 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.usersService.findOne(id);
   }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body()  ) {
-  //   return this.usersService.update(+id);
-  // }
+  @ApiOperation({
+    summary: 'غیرفعال کردن کاربر',
+  })
+  @Patch(':id')
+  async deActiveUser(@Param('id') id: number) {
+    return await this.usersService.deActiveUser(id);
+  }
 
+  @ApiOperation({
+    summary: 'حذف کاربر',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.usersService.remove(id);
   }
 }

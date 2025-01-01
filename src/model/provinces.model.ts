@@ -13,7 +13,7 @@ import { City } from './cities.model';
 // Relations
 
 @Table({
-  tableName: 'Provinces',
+  tableName: 'provinces',
   paranoid: true,
   deletedAt: 'deletedAt',
 })
@@ -35,5 +35,5 @@ export class Province extends Model {
   // Relations
 
   @HasMany(() => City, 'provinceId')
-  City: City[];
+  cities: City[];
 }
