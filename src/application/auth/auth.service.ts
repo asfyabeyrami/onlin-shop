@@ -77,6 +77,9 @@ export class AuthService {
       sub: user.id,
       mobile: user.mobile,
     });
+
+    await this.adminDataAccess.updateJwtToken(token, user.id);
+
     const reslut = {
       status: 200,
       name: user.name,

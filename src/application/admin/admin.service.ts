@@ -4,13 +4,14 @@ import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 
 @Injectable()
 export class AdminService {
-  constructor(private readonly DataAccess: AdminDataAccess) {}
+  constructor(private readonly dataAccess: AdminDataAccess) {}
   // create(createAdminDto: CreateAdminDto) {
   //   return 'This action adds a new admin';
   // }
 
-  findAll() {
-    return `This action returns all admin`;
+  async findAll() {
+    const users = await this.dataAccess.findAll();
+    return users;
   }
 
   findOne(id: number) {
@@ -21,9 +22,8 @@ export class AdminService {
   //   return `This action updates a #${id} admin`;
   // }
 
-  async logOut(adminId: Identifier) {
-    await this.DataAccess.logOut(adminId);
-    return;
+  async logOut(id: number) {
+    return await this.dataAccess.logOut(id);
   }
 
   remove(id: number) {

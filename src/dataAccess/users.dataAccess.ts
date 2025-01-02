@@ -26,6 +26,32 @@ export class UserDataAccess {
     return await Models.User.update({ isActive: false }, { where: { id } });
   }
 
+  async updateJwtToken(jwtToken: string, id: Identifier) {
+    await Models.Admin.update(
+      {
+        jwtToken,
+      },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+  }
+
+  async logOut(id: number) {
+    await Models.Admin.update(
+      {
+        jwtToken: null,
+      },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+  }
+
   async findByMobile(mobile: number): Promise<Models.User> {
     const user = await Models.User.findOne({
       where: {

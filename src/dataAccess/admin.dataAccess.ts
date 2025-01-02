@@ -15,6 +15,16 @@ export class AdminDataAccess {
     return admin;
   }
 
+  async findToken(token: string) {
+    const jwt = await Models.Admin.findOne({
+      attributes: ['jwtToken'],
+      where: {
+        jwtToken: token,
+      },
+    });
+    return jwt?.jwtToken;
+  }
+
   async updateJwtToken(jwtToken: string, id: Identifier) {
     await Models.Admin.update(
       {
@@ -28,10 +38,10 @@ export class AdminDataAccess {
     );
   }
 
-  async logOut(id: Identifier) {
+  async logOut(id: number) {
     await Models.Admin.update(
       {
-        jwtToken: '',
+        jwtToken: null,
       },
       {
         where: {

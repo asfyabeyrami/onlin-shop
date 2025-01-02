@@ -4,8 +4,9 @@ import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
 @Injectable()
 export class UsersService {
   constructor(private readonly dataAccess: UserDataAccess) {}
-  create() {
-    return 'This action adds a new user';
+
+  async logOut(id: number) {
+    return await this.dataAccess.logOut(id);
   }
 
   async findAll() {

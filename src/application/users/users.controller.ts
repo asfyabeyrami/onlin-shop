@@ -6,13 +6,30 @@ import {
   Patch,
   Param,
   Delete,
+  Logger,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Post('logOut')
+  async logOut(@Req() req): Promise<boolean> {
+    const userId = req.id;
+    try {
+      await this.usersService.logOut(userId);
+    } catch (e) {
+      Logger.error(e.massage);
+    }
+    return true;
+  }
 
   @Get()
   findAll() {

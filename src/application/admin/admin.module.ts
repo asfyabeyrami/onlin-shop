@@ -7,6 +7,7 @@ import { CityModule } from './city/city.module';
 import { BrandModule } from './brand/brand.module';
 import { CategoryModule } from './category/category.module';
 import { ProductModule } from './product/product.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [

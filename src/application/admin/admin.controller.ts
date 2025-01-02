@@ -9,10 +9,18 @@ import {
   HttpCode,
   HttpStatus,
   Res,
+  HttpException,
+  Req,
+  UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AdminService } from './admin.service';
+import { AuthGuard } from '../auth/auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
@@ -23,13 +31,14 @@ export class AdminController {
   // }
 
   @Get()
-  findAll() {
-    return this.adminService.findAll();
+  findAll(@Req() req) {
+    console.log(req.id);
+    return { massage: 'access', adminId: req.id, userName: req.userName };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.adminService.findOne(id);
   }
 
   // @Patch(':id')
@@ -37,19 +46,15 @@ export class AdminController {
   //   return this.adminService.update(+id, updateAdminDto);
   // }
 
-  @HttpCode(HttpStatus.OK)
-  @Get('logOut')
-  async logOut(@Res() res: Response): Promise<boolean> {
+  @Post('logOut')
+  async logOut(@Req() req): Promise<boolean> {
+    const adminId = req.id;
     try {
-      const { admin } = res.locals;
-      if (admin) {
-        await this.adminService.logOut(admin.id);
-      }
-      res.json(true);
-      return;
-    } catch (err) {
-      throw err;
+      await this.adminService.logOut(adminId);
+    } catch (e) {
+      Logger.error(e.massage);
     }
+    return true;
   }
 
   @Delete(':id')

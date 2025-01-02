@@ -58,6 +58,12 @@ export class User extends Model {
   isActive: boolean;
 
   @Column({
+    type: Sequelize.TEXT,
+    allowNull: true,
+  })
+  jwtToken: string;
+
+  @Column({
     defaultValue: new Date(),
     allowNull: false,
     type: Sequelize.DATE,

@@ -15,13 +15,14 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Online Shop')
-    .setDescription('The Shop API Document')
+    .setTitle('API مستندات')
+    .setDescription('توضیحات API')
     .setVersion('1.0')
-    .addTag('shop')
+    .addBearerAuth()
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
   console.log(`app running on : ${await app.getUrl()}`);
