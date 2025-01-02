@@ -8,7 +8,12 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
-import { LoginAdminDto, RegisterAdminDto } from 'src/DTO/admin.dto';
+import {
+  AdminDto,
+  adminObj,
+  LoginAdminDto,
+  RegisterAdminDto,
+} from 'src/DTO/admin.dto';
 import { LoginUserDto, RegisterUserDto, UserDto } from 'src/DTO/user.dto';
 
 @Injectable()
@@ -107,11 +112,7 @@ export class AuthService {
     return admin;
   }
 
-  async loginAdmin(payload: LoginAdminDto): Promise<{
-    status: number;
-    massege?: string;
-    error?: string;
-  }> {
+  async loginAdmin(payload: LoginAdminDto): Promise<AdminDto> {
     const { userName, password } = payload;
     if (!userName || !password) {
       throw new HttpException('همه فیلد ها الزامیست', 404);
@@ -130,12 +131,8 @@ export class AuthService {
       sub: admin.id,
       userName: admin.userName,
     });
-    const reslut = {
-      status: 200,
-      userName: admin.userName,
-      error: null,
-      accessToken: token,
-    };
-    return reslut;
+    await this.adminDataAccess.updateJwtToken(token, admin.id);
+
+    return adminObj(admin, token);
   }
 }

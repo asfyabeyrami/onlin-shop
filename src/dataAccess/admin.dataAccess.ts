@@ -15,6 +15,32 @@ export class AdminDataAccess {
     return admin;
   }
 
+  async updateJwtToken(jwtToken: string, id: Identifier) {
+    await Models.Admin.update(
+      {
+        jwtToken,
+      },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+  }
+
+  async logOut(id: Identifier) {
+    await Models.Admin.update(
+      {
+        jwtToken: '',
+      },
+      {
+        where: {
+          id,
+        },
+      },
+    );
+  }
+
   async findAll(): Promise<Models.Admin[]> {
     return await Models.Admin.findAll({
       attributes: { exclude: ['password'] },

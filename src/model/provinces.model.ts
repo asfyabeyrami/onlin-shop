@@ -9,6 +9,7 @@ import {
 } from 'sequelize-typescript';
 import Sequelize from 'sequelize';
 import { City } from './cities.model';
+import { Admin } from './admin.model';
 
 // Relations
 
@@ -25,6 +26,14 @@ export class Province extends Model {
     type: Sequelize.BIGINT,
   })
   id: number;
+
+  @ForeignKey(() => Admin)
+  @Column({
+    type: Sequelize.BIGINT,
+    allowNull: false,
+    references: { model: 'admins', key: 'id' },
+  })
+  adminId: number;
 
   @Column({
     allowNull: false,
@@ -50,4 +59,7 @@ export class Province extends Model {
 
   @HasMany(() => City, 'provinceId')
   cities: City[];
+
+  @BelongsTo(() => Admin, 'adminId')
+  admin: Admin;
 }

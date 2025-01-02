@@ -2,11 +2,11 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './application/users/users.module';
 import { AdminModule } from './application/admin/admin.module';
-import { CategoryModule } from './application/category/category.module';
-import { OrderModule } from './application/order/order.module';
-import { AddressModule } from './application/address/address.module';
-import { BasketModule } from './application/basket/basket.module';
-import { ProductModule } from './application/product/product.module';
+import { CategoryModule } from './application/admin/category/category.module';
+import { OrderModule } from './application/users/order/order.module';
+import { AddressModule } from './application/users/order/address/address.module';
+import { BasketModule } from './application/users/basket/basket.module';
+import { ProductModule } from './application/admin/product/product.module';
 import sequilzeObj from './database/sequilze.obj';
 import {
   Address,
@@ -51,9 +51,9 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
       autoLoadModels: true,
       synchronize: true,
     }),
-    UsersModule,
     AuthModule,
-    // AdminModule,
+    UsersModule,
+    AdminModule,
     // CategoryModule,
     // OrderModule,
     // AddressModule,

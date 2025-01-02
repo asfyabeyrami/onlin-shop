@@ -11,6 +11,7 @@ import Sequelize from 'sequelize';
 import { Product } from './products.model';
 import { Category } from './categories.model';
 import { Brand } from './brands.model';
+import { Province } from './provinces.model';
 
 @Table({
   tableName: 'admins',
@@ -40,6 +41,12 @@ export class Admin extends Model {
   password: string;
 
   @Column({
+    type: Sequelize.TEXT,
+    allowNull: true,
+  })
+  jwtToken: string;
+
+  @Column({
     defaultValue: new Date(),
     allowNull: false,
     type: Sequelize.DATE,
@@ -62,4 +69,7 @@ export class Admin extends Model {
 
   @HasMany(() => Category, 'adminId')
   Category: Category[];
+
+  @HasMany(() => Province, 'adminId')
+  province: Province[];
 }
