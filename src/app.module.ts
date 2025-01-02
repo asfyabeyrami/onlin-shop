@@ -2,12 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './application/users/users.module';
 import { AdminModule } from './application/admin/admin.module';
-import { CategoryModule } from './application/admin/category/category.module';
-import { OrderModule } from './application/users/order/order.module';
-import { AddressModule } from './application/users/order/address/address.module';
-import { BasketModule } from './application/users/basket/basket.module';
-import { ProductModule } from './application/admin/product/product.module';
-import sequilzeObj from './database/sequilze.obj';
+
 import {
   Address,
   Admin,
@@ -24,6 +19,7 @@ import {
 } from './model';
 import { AuthModule } from './application/auth/auth.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { KavenegarModule } from './application/auth//kavenegar/kavenegar.module';
 
 @Module({
   imports: [
@@ -54,11 +50,6 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     AuthModule,
     AdminModule,
     UsersModule,
-    // CategoryModule,
-    // OrderModule,
-    // AddressModule,
-    // BasketModule,
-    // ProductModule,
   ],
   controllers: [],
   providers: [],

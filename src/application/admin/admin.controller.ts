@@ -46,17 +46,6 @@ export class AdminController {
   //   return this.adminService.update(+id, updateAdminDto);
   // }
 
-  @Post('logOut')
-  async logOut(@Req() req): Promise<boolean> {
-    const adminId = req.id;
-    try {
-      await this.adminService.logOut(adminId);
-    } catch (e) {
-      Logger.error(e.massage);
-    }
-    return true;
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.adminService.remove(+id);

@@ -5,9 +5,13 @@ import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
 import { JwtModule } from '@nestjs/jwt';
 import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 import { ConfigModule } from '@nestjs/config';
+import { KavenegarModule } from 'src/application/auth//kavenegar/kavenegar.module';
 
 @Module({
   imports: [
+    KavenegarModule.register({
+      apikey: process.env.KAVENEGAR_API_KEY,
+    }),
     ConfigModule.forRoot(),
     JwtModule.register({
       global: true,

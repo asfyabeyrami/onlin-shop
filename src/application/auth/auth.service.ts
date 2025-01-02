@@ -7,6 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
+import { KavenegarService } from 'src/application/auth/kavenegar/kavenegar.service';
 import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
 import {
   AdminDto,
@@ -21,6 +22,7 @@ export class AuthService {
   constructor(
     private readonly userDataAccess: UserDataAccess,
     private readonly adminDataAccess: AdminDataAccess,
+    private readonly kavenegarService: KavenegarService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -137,5 +139,25 @@ export class AuthService {
     await this.adminDataAccess.updateJwtToken(token, admin.id);
 
     return adminObj(admin, token);
+  }
+
+  async logOutAdmin(id: number) {
+    return await this.adminDataAccess.logOut(id);
+  }
+
+  async logOutUser(id: number) {
+    return await this.userDataAccess.logOut(id);
+  }
+
+  async sendVerificationCode(mobile: string, code: string) {
+    try {
+      return await this.kavenegarService.verifyLookup({
+        receptor: mobile,
+        token: code,
+        template: 'your-verification-template',
+      });
+    } catch (error) {
+      // handle error
+    }
   }
 }
