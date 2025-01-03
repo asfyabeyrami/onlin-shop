@@ -1,10 +1,24 @@
 import { Injectable } from '@nestjs/common';
+import { BrandDataAccess } from 'src/dataAccess/brand.dataAccess';
 
 @Injectable()
 export class BrandService {
-  // create(createBrandDto: CreateBrandDto) {
-  //   return 'This action adds a new brand';
-  // }
+  constructor(private readonly brandDataAccess: BrandDataAccess) {}
+  async create(
+    adminId: number,
+    categoryId: number,
+    brandName: string,
+    picUrl: string,
+    description: string,
+  ) {
+    return await this.brandDataAccess.createBrand(
+      adminId,
+      categoryId,
+      brandName,
+      picUrl,
+      description,
+    );
+  }
 
   findAll() {
     return `This action returns all brand`;

@@ -58,7 +58,7 @@ export class Brand extends Model {
 
   @Column({
     allowNull: false,
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
   })
   description: string;
 

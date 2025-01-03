@@ -19,7 +19,6 @@ import {
 } from './model';
 import { AuthModule } from './application/auth/auth.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
-import { KavenegarModule } from './application/auth//kavenegar/kavenegar.module';
 
 @Module({
   imports: [

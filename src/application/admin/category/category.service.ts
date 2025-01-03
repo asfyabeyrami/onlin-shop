@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { CatDataAccess } from 'src/dataAccess/category.dataAccess';
 
 @Injectable()
 export class CategoryService {
-  // create(createCategoryDto: CreateCategoryDto) {
-  //   return 'This action adds a new category';
-  // }
+  constructor(private readonly catDataAccess: CatDataAccess) {}
+  async create(adminId: number, title: string, fatherId: number) {
+    return await this.catDataAccess.createCategory(adminId, title, fatherId);
+  }
 
   findAll() {
     return `This action returns all category`;
