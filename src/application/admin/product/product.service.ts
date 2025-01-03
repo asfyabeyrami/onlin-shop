@@ -1,10 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { ProductDataAccess } from 'src/dataAccess/product.dataAccess';
 
 @Injectable()
 export class ProductService {
-  // create(createProductDto: CreateProductDto) {
-  //   return 'This action adds a new product';
-  // }
+  constructor(private readonly productDataAccess: ProductDataAccess) {}
+  async create(
+    adminId: number,
+    brandId: number,
+    categoryId: number,
+    productName: string,
+    pCode: number,
+    count: number,
+    price: number,
+    discount: number,
+    picUrl: string,
+    description: string,
+  ) {
+    return await this.productDataAccess.createProduct(
+      adminId,
+      brandId,
+      categoryId,
+      productName,
+      pCode,
+      count,
+      price,
+      discount,
+      picUrl,
+      description,
+    );
+  }
+
+  async notAvailable(productName: string) {
+    return this.productDataAccess.notAvailable(productName);
+  }
 
   findAll() {
     return `This action returns all product`;

@@ -13,6 +13,7 @@ import {
   Req,
   UseGuards,
   Logger,
+  Put,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AdminService } from './admin.service';
@@ -22,6 +23,8 @@ import { CategoryService } from './category/category.service';
 import { CreateCategoryDto } from 'src/DTO/category.dto';
 import { CreateBrandDto } from 'src/DTO/brand.dto';
 import { BrandService } from './brand/brand.service';
+import { CreateProductDto, NotAvailableProductDto } from 'src/DTO/product.dto';
+import { ProductService } from './product/product.service';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -31,6 +34,7 @@ export class AdminController {
     private readonly adminService: AdminService,
     private readonly categoryService: CategoryService,
     private readonly brandService: BrandService,
+    private readonly productService: ProductService,
   ) {}
 
   @Post('createCategory')
@@ -56,6 +60,40 @@ export class AdminController {
       picUrl,
       description,
     );
+  }
+
+  @Post('createProduct')
+  async createProduct(@Req() req, @Body() createProductDto: CreateProductDto) {
+    const adminId = req.id;
+    const {
+      brandId,
+      categoryId,
+      productName,
+      pCode,
+      count,
+      price,
+      discount,
+      picUrl,
+      description,
+    } = createProductDto;
+
+    return this.productService.create(
+      adminId,
+      brandId,
+      categoryId,
+      productName,
+      pCode,
+      count,
+      price,
+      discount,
+      picUrl,
+      description,
+    );
+  }
+
+  @Post('isNotAvailableProduct')
+  async notAvailable(@Body() notAvailableProductDto: NotAvailableProductDto) {
+    return this.productService.notAvailable(notAvailableProductDto.productName);
   }
 
   @Get()

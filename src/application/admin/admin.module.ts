@@ -12,6 +12,8 @@ import { CategoryService } from './category/category.service';
 import { CatDataAccess } from 'src/dataAccess/category.dataAccess';
 import { BrandService } from './brand/brand.service';
 import { BrandDataAccess } from 'src/dataAccess/brand.dataAccess';
+import { ProductService } from './product/product.service';
+import { ProductDataAccess } from 'src/dataAccess/product.dataAccess';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { BrandDataAccess } from 'src/dataAccess/brand.dataAccess';
     CatDataAccess,
     BrandService,
     BrandDataAccess,
+    ProductService,
+    ProductDataAccess,
   ],
 })
 export class AdminModule {}
