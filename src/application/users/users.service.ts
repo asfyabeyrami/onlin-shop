@@ -1,24 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { UserDataAccess } from 'src/dataAccess/users.dataAccess';
 
 @Injectable()
 export class UsersService {
-  create() {
-    return 'This action adds a new user';
+  constructor(private readonly dataAccess: UserDataAccess) {}
+
+  async logOut(id: number) {
+    return await this.dataAccess.logOut(id);
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const user = await this.dataAccess.findAll();
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.dataAccess.findById(id);
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+  async deActiveUser(id: number) {
+    return await this.dataAccess.deActiveUser(id);
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    return await this.dataAccess.remove(id);
   }
 }
