@@ -11,6 +11,7 @@ export class BrandDataAccess {
     adminId: number,
     categoryId: number,
     brandName: string,
+    fatherId: number,
     picUrl: string,
     description: string,
   ): Promise<Models.Brand> {
@@ -18,6 +19,7 @@ export class BrandDataAccess {
       adminId,
       categoryId,
       brandName,
+      fatherId,
       picUrl,
       description,
     });

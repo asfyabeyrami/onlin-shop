@@ -27,7 +27,7 @@ export class UserDataAccess {
   }
 
   async updateJwtToken(jwtToken: string, id: Identifier) {
-    await Models.Admin.update(
+    await Models.User.update(
       {
         jwtToken,
       },
@@ -40,7 +40,7 @@ export class UserDataAccess {
   }
 
   async logOut(id: number) {
-    await Models.Admin.update(
+    await Models.User.update(
       {
         jwtToken: null,
       },

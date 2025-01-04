@@ -7,6 +7,8 @@ import { User } from 'src/model';
 import { BasketModule } from './basket/basket.module';
 import { OrderModule } from './order/order.module';
 import { AddressModule } from './address/address.module';
+import { BasketService } from './basket/basket.service';
+import { BasketDataAccess } from 'src/dataAccess/basket.dataAccess';
 
 @Module({
   imports: [
@@ -16,6 +18,6 @@ import { AddressModule } from './address/address.module';
     AddressModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserDataAccess],
+  providers: [UsersService, UserDataAccess, BasketService, BasketDataAccess],
 })
 export class UsersModule {}

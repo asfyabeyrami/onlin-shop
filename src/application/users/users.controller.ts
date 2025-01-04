@@ -13,22 +13,23 @@ import {
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { AuthGuard } from '../auth/auth.guard';
+import { BasketService } from './basket/basket.service';
+import { CreateBasketDto } from 'src/DTO/basket.dto';
 
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly basketService: BasketService,
+  ) {}
 
-  @UseGuards(AuthGuard)
-  @ApiBearerAuth()
-  @Post('logOut')
-  async logOut(@Req() req): Promise<boolean> {
+  @Post('createBasket')
+  async createBasket(@Req() req, @Body() createBasketDto: CreateBasketDto) {
     const userId = req.id;
-    try {
-      await this.usersService.logOut(userId);
-    } catch (e) {
-      Logger.error(e.massage);
-    }
-    return true;
+    const { productId, count } = createBasketDto;
+    return await this.basketService.createBasket(userId, productId, count);
   }
 
   @Get()
@@ -39,14 +40,6 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.usersService.findOne(id);
-  }
-
-  @ApiOperation({
-    summary: 'غیرفعال کردن کاربر',
-  })
-  @Patch(':id')
-  async deActiveUser(@Param('id') id: number) {
-    return await this.usersService.deActiveUser(id);
   }
 
   @ApiOperation({

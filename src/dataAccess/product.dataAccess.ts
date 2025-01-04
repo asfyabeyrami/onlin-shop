@@ -16,7 +16,7 @@ export class ProductDataAccess {
     pCode: number,
     count: number,
     price: number,
-    discount: number,
+    discount: string,
     picUrl: string,
     description: string,
   ): Promise<Models.Product> {

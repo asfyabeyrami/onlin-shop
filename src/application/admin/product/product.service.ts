@@ -12,7 +12,7 @@ export class ProductService {
     pCode: number,
     count: number,
     price: number,
-    discount: number,
+    discount: string,
     picUrl: string,
     description: string,
   ) {

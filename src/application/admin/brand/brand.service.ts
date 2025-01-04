@@ -8,6 +8,7 @@ export class BrandService {
     adminId: number,
     categoryId: number,
     brandName: string,
+    fatherId: number,
     picUrl: string,
     description: string,
   ) {
@@ -15,6 +16,7 @@ export class BrandService {
       adminId,
       categoryId,
       brandName,
+      fatherId,
       picUrl,
       description,
     );

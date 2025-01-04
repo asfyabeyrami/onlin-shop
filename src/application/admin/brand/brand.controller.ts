@@ -13,11 +13,6 @@ import { BrandService } from './brand.service';
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
-  // @Post()
-  // create(@Body() createBrandDto: CreateBrandDto) {
-  //   return this.brandService.create(createBrandDto);
-  // }
-
   @Get()
   findAll() {
     return this.brandService.findAll();

@@ -6,6 +6,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 import { ConfigModule } from '@nestjs/config';
 import { KavenegarModule } from 'src/application/auth//kavenegar/kavenegar.module';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
@@ -22,6 +23,6 @@ import { KavenegarModule } from 'src/application/auth//kavenegar/kavenegar.modul
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, UserDataAccess, AdminDataAccess],
+  providers: [AuthService, UsersService, UserDataAccess, AdminDataAccess],
 })
 export class AuthModule {}

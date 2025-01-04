@@ -54,10 +54,23 @@ export class RegisterUserDto {
 
 export class LoginUserDto {
   @IsNotEmpty()
-  @ApiProperty({ type: Number })
+  @ApiProperty({ type: String })
   mobile: number;
 
   @IsNotEmpty()
   @ApiProperty({ type: String })
   password: string;
+}
+export class ResLoginUserDto {
+  @ApiProperty({ type: Number })
+  status: number;
+
+  @ApiProperty({ type: String })
+  name: string;
+
+  @ApiProperty({ type: String })
+  error: string;
+
+  @ApiProperty({ type: String })
+  accessToken: string;
 }

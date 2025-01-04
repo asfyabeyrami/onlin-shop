@@ -45,10 +45,17 @@ export class Brand extends Model {
   categoryId: number;
 
   @Column({
-    allowNull: false,
+    allowNull: true,
     type: Sequelize.STRING,
   })
   brandName: string;
+
+  @ForeignKey(() => Category)
+  @Column({
+    allowNull: true,
+    type: Sequelize.INTEGER,
+  })
+  fatherId: number;
 
   @Column({
     allowNull: false,
@@ -57,12 +64,18 @@ export class Brand extends Model {
   picUrl: string;
 
   @Column({
-    allowNull: false,
+    allowNull: true,
     type: Sequelize.TEXT,
   })
   description: string;
 
   // Relations
+
+  @BelongsTo(() => Brand, 'fatherId')
+  parent: Brand;
+
+  @HasMany(() => Brand, 'fatherId')
+  children: Brand[];
 
   @BelongsToMany(() => Category, () => CatBrand)
   Category: Category[];

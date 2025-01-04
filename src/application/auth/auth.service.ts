@@ -80,7 +80,7 @@ export class AuthService {
       mobile: user.mobile,
     });
 
-    await this.adminDataAccess.updateJwtToken(token, user.id);
+    await this.userDataAccess.updateJwtToken(token, user.id);
 
     const reslut = {
       status: 200,

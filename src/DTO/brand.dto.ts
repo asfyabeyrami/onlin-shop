@@ -6,15 +6,19 @@ export class CreateBrandDto {
   @ApiProperty({ type: String })
   categoryId: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({ type: String })
   brandName: string;
+
+  @IsOptional()
+  @ApiProperty({ type: String })
+  fatherId: number;
 
   @IsNotEmpty()
   @ApiProperty({ type: String })
   picUrl: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({ type: String })
   description: string;
 }

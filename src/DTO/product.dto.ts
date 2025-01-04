@@ -28,7 +28,7 @@ export class CreateProductDto {
 
   @IsNotEmpty()
   @ApiProperty({ type: String })
-  discount: number;
+  discount: string;
 
   @IsNotEmpty()
   @ApiProperty({ type: String })

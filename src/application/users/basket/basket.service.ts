@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { BasketDataAccess } from 'src/dataAccess/basket.dataAccess';
+import { CreateBasketDto } from 'src/DTO/basket.dto';
 
 @Injectable()
 export class BasketService {
-  // create(createBasketDto: CreateBasketDto) {
-  //   return 'This action adds a new basket';
-  // }
+  constructor(private readonly basketDataAccess: BasketDataAccess) {}
+  async createBasket(userId: number, productId: number, count: number) {
+    return await this.basketDataAccess.createBasket(userId, productId, count);
+  }
 
   findAll() {
     return `This action returns all basket`;
