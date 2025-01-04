@@ -8,15 +8,16 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CityService } from './city.service';
+import { CreateCityDto } from 'src/DTO/address.dto';
 
 @Controller('city')
 export class CityController {
   constructor(private readonly cityService: CityService) {}
 
-  // @Post()
-  // create(@Body() createCityDto: CreateCityDto) {
-  //   return this.cityService.create(createCityDto);
-  // }
+  @Post()
+  create(@Body() createCityDto: CreateCityDto) {
+    return this.cityService.create(createCityDto);
+  }
 
   @Get()
   findAll() {

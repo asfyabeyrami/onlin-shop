@@ -6,17 +6,25 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { ProvinceService } from './province.service';
+import { AuthGuard } from 'src/application/auth/auth.guard';
+import { CreateProvinceDto } from 'src/DTO/address.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 @Controller('province')
 export class ProvinceController {
   constructor(private readonly provinceService: ProvinceService) {}
 
-  // @Post()
-  // create(@Body() createProvinceDto: CreateProvinceDto) {
-  //   return this.provinceService.create(createProvinceDto);
-  // }
+  @Post()
+  create(@Req() req, @Body() createProvinceDto: CreateProvinceDto) {
+    const adminId = req.id;
+    return this.provinceService.create(adminId, createProvinceDto);
+  }
 
   @Get()
   findAll() {

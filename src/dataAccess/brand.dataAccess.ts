@@ -14,13 +14,18 @@ export class BrandDataAccess {
     picUrl: string,
     description: string,
   ): Promise<Models.Brand> {
-    const brand = await Models.Brand.create({
+    const newBrand = await Models.Brand.create({
       adminId,
       categoryId,
       brandName,
       picUrl,
       description,
     });
-    return brand;
+    await Models.CatBrand.create({
+      categoryId: categoryId,
+      brandId: newBrand.id,
+    });
+
+    return newBrand;
   }
 }
