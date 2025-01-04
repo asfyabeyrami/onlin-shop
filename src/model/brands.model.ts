@@ -12,7 +12,6 @@ import Sequelize from 'sequelize';
 
 // Relations
 import { Category } from './categories.model';
-import { CatBrand } from './catBrand.model';
 import { Product } from './products.model';
 import { Admin } from './admin.model';
 
@@ -37,25 +36,11 @@ export class Brand extends Model {
   })
   adminId: number;
 
-  @ForeignKey(() => Category)
-  @Column({
-    type: Sequelize.BIGINT,
-    references: { model: 'categories', key: 'id' },
-  })
-  categoryId: number;
-
   @Column({
     allowNull: true,
     type: Sequelize.STRING,
   })
   brandName: string;
-
-  @ForeignKey(() => Category)
-  @Column({
-    allowNull: true,
-    type: Sequelize.INTEGER,
-  })
-  fatherId: number;
 
   @Column({
     allowNull: false,
@@ -70,15 +55,6 @@ export class Brand extends Model {
   description: string;
 
   // Relations
-
-  @BelongsTo(() => Brand, 'fatherId')
-  parent: Brand;
-
-  @HasMany(() => Brand, 'fatherId')
-  children: Brand[];
-
-  @BelongsToMany(() => Category, () => CatBrand)
-  Category: Category[];
 
   @HasMany(() => Product, 'brandId')
   Product: Product[];

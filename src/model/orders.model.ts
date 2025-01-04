@@ -83,12 +83,14 @@ export class Order extends Model {
   paymentMethod: string;
 
   @Column({
+    defaultValue: false,
     allowNull: false,
     type: Sequelize.BOOLEAN,
   })
   paymentStatus: boolean;
 
   @Column({
+    defaultValue: false,
     allowNull: false,
     type: Sequelize.STRING,
   })

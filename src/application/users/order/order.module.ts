@@ -8,6 +8,6 @@ import { BasketDataAccess } from 'src/dataAccess/basket.dataAccess';
 @Module({
   imports: [AddressModule],
   controllers: [OrderController],
-  providers: [OrderService, OrderDataAccess],
+  providers: [OrderService, OrderDataAccess, BasketDataAccess],
 })
 export class OrderModule {}

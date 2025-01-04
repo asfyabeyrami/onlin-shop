@@ -4,15 +4,35 @@ import { OrderDataAccess } from 'src/dataAccess/order.dataAccess';
 
 @Injectable()
 export class OrderService {
-  constructor(private readonly orderDataAccess: OrderDataAccess) {}
-  create(
+  constructor(
+    private readonly orderDataAccess: OrderDataAccess,
+    private readonly basketDataAccess: BasketDataAccess,
+  ) {}
+  async create(
     userId: number,
     basketId: number,
     addressId: number,
     delivery: string,
     paymentMethod: string,
   ) {
-    return this.orderDataAccess.createOrder();
+    const basketProducts = await this.basketDataAccess.findByBasketId(basketId);
+    let totalPrice = 0;
+    let totalDiscount = 0;
+    const finalPrice = totalPrice + totalDiscount;
+    for (const item of basketProducts) {
+      totalPrice += item.product.price;
+      totalDiscount += item.product.discount;
+    }
+    return this.orderDataAccess.createOrder(
+      userId,
+      basketId,
+      addressId,
+      delivery,
+      paymentMethod,
+      totalPrice,
+      totalDiscount,
+      finalPrice,
+    );
   }
 
   findAll() {

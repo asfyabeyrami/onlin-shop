@@ -23,12 +23,26 @@ export class BasketDataAccess {
 
     return newBasket;
   }
-
+  async findByBasketId(basketId: number): Promise<Models.BasketProduct[]> {
+    return await Models.BasketProduct.findAll({
+      where: {
+        basketId,
+      },
+      include: [
+        {
+          model: Models.Product,
+          // اگر نام رابطه را در مدل تعریف کرده‌اید، می‌توانید از as هم استفاده کنید
+          // as: 'product'
+        },
+      ],
+    });
+  }
   async findPrice(basketId: number) {
     const result = await Models.BasketProduct.findOne({
       where: {
         basketId: basketId,
       },
     });
+    return result;
   }
 }
