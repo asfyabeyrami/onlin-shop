@@ -1,10 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { BasketDataAccess } from 'src/dataAccess/basket.dataAccess';
+import { OrderDataAccess } from 'src/dataAccess/order.dataAccess';
 
 @Injectable()
 export class OrderService {
-  // create(createOrderDto: CreateOrderDto) {
-  //   return 'This action adds a new order';
-  // }
+  constructor(private readonly orderDataAccess: OrderDataAccess) {}
+  create(
+    userId: number,
+    basketId: number,
+    addressId: number,
+    delivery: string,
+    paymentMethod: string,
+  ) {
+    return this.orderDataAccess.createOrder();
+  }
 
   findAll() {
     return `This action returns all order`;

@@ -15,3 +15,17 @@ export class CreateCityDto {
   @ApiProperty({ type: String })
   city: string;
 }
+
+export class CreateAddressDto {
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  cityId: number;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  address: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  zipCode: number;
+}

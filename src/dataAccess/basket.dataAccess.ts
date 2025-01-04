@@ -23,4 +23,12 @@ export class BasketDataAccess {
 
     return newBasket;
   }
+
+  async findPrice(basketId: number) {
+    const result = await Models.BasketProduct.findOne({
+      where: {
+        basketId: basketId,
+      },
+    });
+  }
 }

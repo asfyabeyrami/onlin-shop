@@ -1,10 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { AddressDataAccess } from 'src/dataAccess/address.dataAccess';
 
 @Injectable()
 export class AddressService {
-  // create(createAddressDto: CreateAddressDto) {
-  //   return 'This action adds a new address';
-  // }
+  constructor(private readonly addressDataAccess: AddressDataAccess) {}
+  async create(
+    userId: number,
+    cityId: number,
+    address: string,
+    zipCode: number,
+  ) {
+    return await this.addressDataAccess.createAddress(
+      userId,
+      cityId,
+      address,
+      zipCode,
+    );
+  }
 
   findAll() {
     return `This action returns all address`;
