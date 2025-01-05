@@ -13,10 +13,15 @@ export class BasketService {
     return `This action returns all basket`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} basket`;
-  }
+  async findOne(id: number) {
+    const basket = await this.basketDataAccess.findBasketByUserId(id);
 
+    const productIds = basket.flatMap((basket) =>
+      basket.BasketProduct.map((basketProduct) => basketProduct.productId),
+    );
+    const products = await this.basketDataAccess.findBasketByUserId(id);
+    return products;
+  }
   // update(id: number, updateBasketDto: UpdateBasketDto) {
   //   return `This action updates a #${id} basket`;
   // }

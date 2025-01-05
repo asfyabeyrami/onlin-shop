@@ -29,3 +29,17 @@ export class CreateAddressDto {
   @ApiProperty({ type: String })
   zipCode: number;
 }
+
+export class EditAddressDto {
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  cityId: number;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  address: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  zipCode: number;
+}

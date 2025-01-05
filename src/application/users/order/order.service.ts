@@ -16,13 +16,25 @@ export class OrderService {
     paymentMethod: string,
   ) {
     const basketProducts = await this.basketDataAccess.findByBasketId(basketId);
+
+    let finalPrice = 0;
     let totalPrice = 0;
     let totalDiscount = 0;
-    const finalPrice = totalPrice + totalDiscount;
-    for (const item of basketProducts) {
-      totalPrice += item.product.price;
-      totalDiscount += item.product.discount;
-    }
+
+    basketProducts.forEach((basketProduct) => {
+      let price = basketProduct.product.price;
+      const discount = basketProduct.product.discount;
+      const count = basketProduct.product.count;
+
+      totalPrice += price * count;
+
+      const productDiscount = price * (discount / 100);
+      totalDiscount += productDiscount * count;
+
+      const discountedPrice = price - productDiscount;
+      finalPrice += discountedPrice * count;
+    });
+
     return this.orderDataAccess.createOrder(
       userId,
       basketId,
@@ -35,12 +47,13 @@ export class OrderService {
     );
   }
 
-  findAll() {
-    return `This action returns all order`;
+  async findAll() {
+    const orders = await this.orderDataAccess.findAll();
+    return orders;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(id: number) {
+    return await this.orderDataAccess.findByUserId(id);
   }
 
   // update(id: number, updateOrderDto: UpdateOrderDto) {

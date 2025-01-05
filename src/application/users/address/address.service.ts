@@ -18,19 +18,26 @@ export class AddressService {
     );
   }
 
-  findAll() {
-    return `This action returns all address`;
+  async updateAddress(
+    userId: number,
+    cityId: number,
+    address: string,
+    zipCode: number,
+  ): Promise<boolean> {
+    await this.addressDataAccess.updateAddress(
+      userId,
+      cityId,
+      address,
+      zipCode,
+    );
+    return true;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} address`;
+  async findAll(userId: number) {
+    return await this.addressDataAccess.findAll(userId);
   }
 
-  // update(id: number, updateAddressDto: UpdateAddressDto) {
-  //   return `This action updates a #${id} address`;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} address`;
+  async remove(id: number) {
+    return await this.addressDataAccess.remove(id);
   }
 }

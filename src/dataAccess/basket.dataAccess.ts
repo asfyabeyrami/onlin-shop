@@ -23,6 +23,37 @@ export class BasketDataAccess {
 
     return newBasket;
   }
+
+  async findById(basketId: number) {
+    return await Models.BasketProduct.findOne({
+      where: { basketId },
+      attributes: ['count'],
+    });
+  }
+
+  async findProduct(productId: number) {
+    await Models.Product.findAll({
+      where: {
+        id: productId,
+      },
+      attributes: ['id', 'productName', 'price'],
+    });
+  }
+
+  async findBasketByUserId(userId: number) {
+    const basket = await Models.Basket.findAll({
+      where: { userId },
+      include: [
+        {
+          model: Models.BasketProduct,
+          attributes: ['productId'],
+          include: [{ model: Models.Product, attributes: ['productName'] }],
+        },
+      ],
+    });
+    return basket;
+  }
+
   async findByBasketId(basketId: number): Promise<Models.BasketProduct[]> {
     return await Models.BasketProduct.findAll({
       where: {
@@ -31,8 +62,7 @@ export class BasketDataAccess {
       include: [
         {
           model: Models.Product,
-          // اگر نام رابطه را در مدل تعریف کرده‌اید، می‌توانید از as هم استفاده کنید
-          // as: 'product'
+          attributes: ['id', 'productName', 'price', 'count', 'discount'],
         },
       ],
     });

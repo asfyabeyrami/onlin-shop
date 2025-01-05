@@ -29,4 +29,16 @@ export class OrderDataAccess {
     });
     return result;
   }
+
+  async findAll(): Promise<Models.Order[]> {
+    return await Models.Order.findAll();
+  }
+
+  async findByUserId(userId: number): Promise<Models.Order[]> {
+    return await Models.Order.findAll({
+      where: {
+        userId,
+      },
+    });
+  }
 }

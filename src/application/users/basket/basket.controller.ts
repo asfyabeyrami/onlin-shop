@@ -51,10 +51,11 @@ export class BasketController {
   //   return this.basketService.findAll();
   // }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.basketService.findOne(+id);
-  // }
+  @Get('userBaskets')
+  async findOne(@Req() req) {
+    const userId = req.id;
+    return await this.basketService.findOne(userId);
+  }
 
   // // @Patch(':id')
   // // update(@Param('id') id: string, @Body() updateBasketDto: UpdateBasketDto) {

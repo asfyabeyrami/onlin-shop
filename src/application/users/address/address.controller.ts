@@ -10,9 +10,10 @@ import {
   HttpStatus,
   Req,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { AddressService } from './address.service';
-import { CreateAddressDto } from 'src/DTO/address.dto';
+import { CreateAddressDto, EditAddressDto } from 'src/DTO/address.dto';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -46,23 +47,44 @@ export class AddressController {
     return await this.addressService.create(userId, cityId, address, zipCode);
   }
 
+  // edit address for user ***************************************************
+  @ApiOperation({
+    summary: 'تغییر آدرس توسط کاربر',
+  })
+  @ApiBody({
+    type: CreateAddressDto,
+    description: 'تغییر آدرس توسط کاربر',
+  })
+  @ApiOkResponse({
+    description: 'آدرس جدید با موفقیت ایجاد شد',
+  })
+  @Put('editAddress')
+  @HttpCode(HttpStatus.OK)
+  async editAddress(@Req() req, @Body() editAddressDto: EditAddressDto) {
+    const userId = req.id;
+    const { cityId, address, zipCode } = editAddressDto;
+    await this.addressService.updateAddress(userId, cityId, address, zipCode);
+    return `{آدرس شما تغییر یافت}`;
+  }
+
   // @Get()
   // findAll() {
   //   return this.addressService.findAll();
   // }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.addressService.findOne(+id);
-  // }
+  @ApiOperation({
+    summary: 'پیدا کردن آدرس های یک کاربر با آی دی',
+  })
+  @Get(':id')
+  findAll(@Param('id') userId: number) {
+    return this.addressService.findAll(userId);
+  }
 
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateAddressDto: UpdateAddressDto) {
-  // //   return this.addressService.update(+id, updateAddressDto);
-  // // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.addressService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: 'حذف آدرس کاربر',
+  })
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.addressService.remove(id);
+  }
 }
