@@ -17,6 +17,7 @@ export class UserDataAccess {
       name,
       lastName,
       mobile,
+      role: 'user',
       password,
       isActive: true,
     });

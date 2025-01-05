@@ -20,7 +20,7 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { CreateAddressDto } from 'src/DTO/address.dto';
-import { AuthGuard } from 'src/application/auth/auth.guard';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()

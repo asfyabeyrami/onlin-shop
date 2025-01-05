@@ -20,7 +20,9 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { AuthGuard } from 'src/application/auth/auth.guard';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -76,6 +78,7 @@ export class AddressController {
     summary: 'پیدا کردن آدرس های یک کاربر با آی دی',
   })
   @Get(':id')
+  @Roles(Role.USER)
   findAll(@Param('id') userId: number) {
     return this.addressService.findAll(userId);
   }

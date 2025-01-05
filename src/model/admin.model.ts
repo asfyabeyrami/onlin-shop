@@ -41,6 +41,12 @@ export class Admin extends Model {
   password: string;
 
   @Column({
+    type: Sequelize.STRING,
+    allowNull: false,
+  })
+  role: string;
+
+  @Column({
     type: Sequelize.TEXT,
     allowNull: true,
   })

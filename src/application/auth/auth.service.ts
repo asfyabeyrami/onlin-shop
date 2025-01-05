@@ -78,6 +78,7 @@ export class AuthService {
     const token = await this.jwtService.signAsync({
       sub: user.id,
       mobile: user.mobile,
+      role: user.role,
     });
 
     await this.userDataAccess.updateJwtToken(token, user.id);
@@ -135,6 +136,7 @@ export class AuthService {
     const token = await this.jwtService.signAsync({
       sub: admin.id,
       userName: admin.userName,
+      role: admin.role,
     });
     await this.adminDataAccess.updateJwtToken(token, admin.id);
 

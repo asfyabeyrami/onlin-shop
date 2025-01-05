@@ -12,7 +12,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ProvinceService } from './province.service';
-import { AuthGuard } from 'src/application/auth/auth.guard';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
 import { CreateProvinceDto } from 'src/DTO/address.dto';
 import {
   ApiBearerAuth,
@@ -21,6 +21,8 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { CreateCategoryDto } from 'src/DTO/category.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -40,6 +42,7 @@ export class ProvinceController {
     description: 'استان وارد شده با موفقیت ثبت شد',
   })
   @Post('createProvince')
+  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   createProvince(@Req() req, @Body() createProvinceDto: CreateProvinceDto) {
     const adminId = req.id;

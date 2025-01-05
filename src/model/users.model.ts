@@ -39,6 +39,12 @@ export class User extends Model {
   lastName: string;
 
   @Column({
+    type: Sequelize.STRING,
+    allowNull: false,
+  })
+  role: string;
+
+  @Column({
     allowNull: false,
     type: Sequelize.STRING,
   })

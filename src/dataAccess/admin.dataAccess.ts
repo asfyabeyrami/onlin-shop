@@ -11,6 +11,7 @@ export class AdminDataAccess {
     const admin = await Models.Admin.create({
       userName,
       password,
+      role: 'admin',
     });
     return admin;
   }

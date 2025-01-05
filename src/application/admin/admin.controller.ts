@@ -17,7 +17,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AdminService } from './admin.service';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/Guard/auth.guard';
 import {
   ApiBearerAuth,
   ApiBody,

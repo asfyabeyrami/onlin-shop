@@ -19,7 +19,7 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { AuthGuard } from 'src/application/auth/auth.guard';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
