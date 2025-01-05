@@ -78,9 +78,10 @@ export class AuthService {
     const token = await this.jwtService.signAsync({
       sub: user.id,
       mobile: user.mobile,
+      role: user.role,
     });
 
-    await this.adminDataAccess.updateJwtToken(token, user.id);
+    await this.userDataAccess.updateJwtToken(token, user.id);
 
     const reslut = {
       status: 200,
@@ -135,6 +136,7 @@ export class AuthService {
     const token = await this.jwtService.signAsync({
       sub: admin.id,
       userName: admin.userName,
+      role: admin.role,
     });
     await this.adminDataAccess.updateJwtToken(token, admin.id);
 

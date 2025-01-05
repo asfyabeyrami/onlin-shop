@@ -9,7 +9,6 @@ import {
   Basket,
   BasketProduct,
   Brand,
-  CatBrand,
   Category,
   City,
   Order,
@@ -19,6 +18,8 @@ import {
 } from './model';
 import { AuthModule } from './application/auth/auth.module';
 import { LoggerMiddleware } from './middleware/logger.middleware';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthorizationGuard } from './application/auth/Guard/authorization.guard';
 
 @Module({
   imports: [
@@ -41,7 +42,6 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
         Basket,
         Order,
         BasketProduct,
-        CatBrand,
       ],
       autoLoadModels: true,
       synchronize: true,
@@ -51,7 +51,12 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     UsersModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthorizationGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

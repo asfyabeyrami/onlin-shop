@@ -13,6 +13,8 @@ import Sequelize from 'sequelize';
 import { User } from './users.model';
 import { Basket } from './basket.model';
 import { Address } from './addresses.model';
+import { Method } from 'src/common/eNums/paymentMethod.enum';
+import { Delivery } from 'src/common/eNums/delivery.enum';
 
 @Table({
   tableName: 'orders',
@@ -68,24 +70,27 @@ export class Order extends Model {
   finalPrice: number;
 
   @Column({
+    defaultValue: Delivery.POST,
     allowNull: false,
-    type: Sequelize.STRING,
+    type: Sequelize.ENUM({ values: Object.keys(Delivery) }),
   })
   delivery: string;
 
   @Column({
     allowNull: false,
-    type: Sequelize.STRING,
+    type: Sequelize.ENUM({ values: Object.keys(Method) }),
   })
   paymentMethod: string;
 
   @Column({
+    defaultValue: false,
     allowNull: false,
     type: Sequelize.BOOLEAN,
   })
   paymentStatus: boolean;
 
   @Column({
+    defaultValue: false,
     allowNull: false,
     type: Sequelize.STRING,
   })

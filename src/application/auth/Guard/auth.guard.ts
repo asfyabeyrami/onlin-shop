@@ -27,6 +27,7 @@ export class AuthGuard implements CanActivate {
       request.id = payload.sub;
       request.userName = payload.userName;
       request.mobile = payload.mobile;
+      request.roles = payload.roles;
     } catch (e) {
       Logger.error(e.massege);
       throw new UnauthorizedException('توکن نامعتبر');

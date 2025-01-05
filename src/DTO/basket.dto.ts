@@ -1,16 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class CreateBrandDto {
-  @IsOptional()
+export class CreateBasketDto {
+  @IsNotEmpty()
   @ApiProperty({ type: String })
-  brandName: string;
+  productId: number;
 
   @IsNotEmpty()
   @ApiProperty({ type: String })
-  picUrl: string;
-
-  @IsOptional()
-  @ApiProperty({ type: String })
-  description: string;
+  count: number;
 }

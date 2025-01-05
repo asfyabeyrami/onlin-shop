@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { ProvinceDataAccess } from 'src/dataAccess/province.dataAccess';
+import { CreateCityDto } from 'src/DTO/address.dto';
 
 @Injectable()
 export class CityService {
-  // create(createCityDto: CreateCityDto) {
-  //   return 'This action adds a new city';
-  // }
+  constructor(private readonly provinceDataAccess: ProvinceDataAccess) {}
+  async create(createCityDto: CreateCityDto) {
+    const { provinceId, city } = createCityDto;
+    return await this.provinceDataAccess.createCity(provinceId, city);
+  }
 
   findAll() {
     return `This action returns all city`;

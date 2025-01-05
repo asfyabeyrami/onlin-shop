@@ -6,14 +6,12 @@ export class BrandService {
   constructor(private readonly brandDataAccess: BrandDataAccess) {}
   async create(
     adminId: number,
-    categoryId: number,
     brandName: string,
     picUrl: string,
     description: string,
   ) {
     return await this.brandDataAccess.createBrand(
       adminId,
-      categoryId,
       brandName,
       picUrl,
       description,

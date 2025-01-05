@@ -82,7 +82,7 @@ export class Product extends Model {
 
   @Column({
     allowNull: false,
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
   })
   discount: number;
 

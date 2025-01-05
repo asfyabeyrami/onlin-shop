@@ -7,7 +7,9 @@ export class ProductDataAccess {
   tableName() {
     return Models.Product.tableName;
   }
-
+  async findById(id: number): Promise<Models.Product> {
+    return Models.Product.findByPk(id);
+  }
   async createProduct(
     adminId: number,
     brandId: number,
