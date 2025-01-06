@@ -26,6 +26,7 @@ import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.gua
 import { User } from 'src/decorators/getFromReq.decorators';
 
 @UseGuards(AuthGuard, AuthorizationGuard)
+@Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('province')
 export class ProvinceController {
@@ -43,7 +44,6 @@ export class ProvinceController {
     description: 'استان وارد شده با موفقیت ثبت شد',
   })
   @Post('createProvince')
-  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
   createProvince(
     @User('id') adminId: number,

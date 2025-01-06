@@ -9,11 +9,26 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  Put,
+  UseGuards,
 } from '@nestjs/common';
 import { BrandService } from './brand.service';
-import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { CreateBrandDto } from 'src/DTO/brand.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import { CreateBrandDto, UpdateBrandDto } from 'src/DTO/brand.dto';
+import { User } from 'src/decorators/getFromReq.decorators';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
+import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
 
+@UseGuards(AuthGuard, AuthorizationGuard)
+@Roles(Role.ADMIN)
+@ApiBearerAuth()
 @Controller('brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
@@ -31,30 +46,47 @@ export class BrandController {
   })
   @Post('createBrand')
   @HttpCode(HttpStatus.OK)
-  async createBrand(@Req() req, @Body() createBrandDto: CreateBrandDto) {
-    const adminId = req.id;
+  async createBrand(
+    @User('id') adminId: number,
+    @Body() createBrandDto: CreateBrandDto,
+  ) {
     const { brandName, picUrl, description } = createBrandDto;
 
     return this.brandService.create(adminId, brandName, picUrl, description);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.brandService.findAll();
-  // }
+  @ApiOperation({
+    summary: 'لیست برند ها',
+  })
+  @Get()
+  findAll() {
+    return this.brandService.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.brandService.findOne(+id);
-  // }
+  @ApiOperation({
+    summary: ' گرفتن برند با آی دی ',
+  })
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.brandService.findOne(id);
+  }
 
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-  // //   return this.brandService.update(+id, updateBrandDto);
-  // // }
+  @ApiOperation({
+    summary: 'آپدیت برند',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @Body() updateBrandDto: UpdateBrandDto,
+  ) {
+    return await this.brandService.update(id, updateBrandDto);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.brandService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: 'حذف برند',
+  })
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.brandService.remove(+id);
+  }
 }

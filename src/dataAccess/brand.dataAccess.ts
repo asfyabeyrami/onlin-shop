@@ -21,4 +21,29 @@ export class BrandDataAccess {
     });
     return newBrand;
   }
+
+  async updateBrand(
+    id: number,
+    brandName: string,
+    picUrl: string,
+    description: string,
+  ) {
+    return await Models.Brand.update(
+      { brandName, picUrl, description },
+      { where: { id } },
+    );
+  }
+
+  async findAll(): Promise<Models.Brand[]> {
+    return await Models.Brand.findAll();
+  }
+
+  async findById(id: number): Promise<Models.Brand> {
+    return await Models.Brand.findByPk(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    const brand = await this.findById(id);
+    return await brand.destroy();
+  }
 }
