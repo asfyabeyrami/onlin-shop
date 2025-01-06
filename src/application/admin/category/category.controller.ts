@@ -9,11 +9,26 @@ import {
   HttpCode,
   HttpStatus,
   Req,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { CreateCategoryDto } from 'src/DTO/category.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import { CreateCategoryDto, UpdateCategoryDto } from 'src/DTO/category.dto';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
+import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
+import { User } from 'src/decorators/getFromReq.decorators';
 
+@UseGuards(AuthGuard, AuthorizationGuard)
+@Roles(Role.ADMIN)
+@ApiBearerAuth()
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -32,32 +47,55 @@ export class CategoryController {
   @Post('createCategory')
   @HttpCode(HttpStatus.OK)
   async createCategory(
-    @Req() req,
+    @User('id') adminId: number,
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
-    const adminId = req.id;
     const { title, fatherId } = createCategoryDto;
 
     return this.categoryService.create(adminId, title, fatherId);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.categoryService.findAll();
-  // }
+  @ApiOperation({
+    summary: 'لیست دسته بندی ها',
+  })
+  @Get()
+  findAll() {
+    return this.categoryService.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.categoryService.findOne(+id);
-  // }
+  @ApiOperation({
+    summary: 'گرفتن محصولات یک دسته‌بندی',
+  })
+  @Get('category/:category')
+  findByCategory(@Param('category') category: string) {
+    return this.categoryService.findAllAsCat(category);
+  }
 
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-  // //   return this.categoryService.update(+id, updateCategoryDto);
-  // // }
+  @ApiOperation({
+    summary: ' گرفتن دسته بندی با آی دی ',
+  })
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.categoryService.findOne(id);
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.categoryService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: 'آپدیت دسته بندی',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @User('id') adminId: number,
+    @Body() updateBrandDto: UpdateCategoryDto,
+  ) {
+    return await this.categoryService.update(id, adminId, updateBrandDto);
+  }
+
+  @ApiOperation({
+    summary: 'حذف دسته بندی',
+  })
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.categoryService.remove(+id);
+  }
 }

@@ -42,6 +42,10 @@ export class BrandService {
     }
   }
 
+  async findWithName(brandName: string) {
+    return await this.brandDataAccess.findByName(brandName);
+  }
+
   async remove(id: number) {
     return await this.brandDataAccess.remove(id);
   }

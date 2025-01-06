@@ -72,6 +72,14 @@ export class BrandController {
   }
 
   @ApiOperation({
+    summary: 'گرفتن برند با اسم',
+  })
+  @Get('name/:brandName')
+  findWithName(@Param('brandName') brandName: string) {
+    return this.brandService.findWithName(brandName);
+  }
+
+  @ApiOperation({
     summary: 'آپدیت برند',
   })
   @Put(':id')

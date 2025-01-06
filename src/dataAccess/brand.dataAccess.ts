@@ -38,6 +38,10 @@ export class BrandDataAccess {
     return await Models.Brand.findAll();
   }
 
+  async findByName(brandName: string): Promise<Models.Brand> {
+    return await Models.Brand.findOne({ where: { brandName } });
+  }
+
   async findById(id: number): Promise<Models.Brand> {
     return await Models.Brand.findByPk(id);
   }

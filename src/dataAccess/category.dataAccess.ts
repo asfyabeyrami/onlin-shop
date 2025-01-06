@@ -19,4 +19,42 @@ export class CatDataAccess {
     });
     return category;
   }
+
+  async updateCategory(
+    id: number,
+    adminId: number,
+    fatherId: number,
+    title: string,
+  ) {
+    return await Models.Category.update(
+      { adminId, fatherId, title },
+      { where: { id } },
+    );
+  }
+
+  async findAllAsCat(categoryName: string): Promise<Models.Category[]> {
+    const products = await Models.Category.findAll({
+      include: [
+        {
+          model: Models.Product,
+          attributes: ['productName'],
+        },
+      ],
+    });
+
+    return products;
+  }
+
+  async findAll(): Promise<Models.Category[]> {
+    return await Models.Category.findAll();
+  }
+
+  async findById(id: number): Promise<Models.Category> {
+    return await Models.Category.findByPk(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    const Category = await this.findById(id);
+    return await Category.destroy();
+  }
 }
