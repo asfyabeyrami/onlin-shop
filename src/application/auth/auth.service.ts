@@ -56,12 +56,12 @@ export class AuthService {
     return user;
   }
 
-  async login(payload: LoginUserDto): Promise<{
+  async login(loginData: LoginUserDto): Promise<{
     status: number;
     massege?: string;
     error?: string;
   }> {
-    const { mobile, password } = payload;
+    const { mobile, password } = loginData;
     if (!mobile || !password) {
       throw new HttpException('همه فیلد ها الزامیست', 404);
     }
@@ -75,11 +75,18 @@ export class AuthService {
     if (!passwordMatch) {
       throw new HttpException('پسورد صحیح نمی باشد', 404);
     }
-    const token = await this.jwtService.signAsync({
+
+    console.log('User before token generation:', user);
+
+    const payload = {
       sub: user.id,
       mobile: user.mobile,
-      role: user.role,
-    });
+      role: 'USER'
+    };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    console.log('Generated token payload:', payload);
 
     await this.userDataAccess.updateJwtToken(token, user.id);
 

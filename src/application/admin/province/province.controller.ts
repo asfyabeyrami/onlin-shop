@@ -20,11 +20,12 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { CreateCategoryDto } from 'src/DTO/category.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
+import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
+import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, AuthorizationGuard)
 @ApiBearerAuth()
 @Controller('province')
 export class ProvinceController {
@@ -44,28 +45,26 @@ export class ProvinceController {
   @Post('createProvince')
   @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
-  createProvince(@Req() req, @Body() createProvinceDto: CreateProvinceDto) {
-    const adminId = req.id;
+  createProvince(
+    @User('id') adminId: number,
+    @Body() createProvinceDto: CreateProvinceDto,
+  ) {
     return this.provinceService.create(adminId, createProvinceDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.provinceService.findAll();
-  // }
+  @ApiOperation({
+    summary: ' لیست استان ها ',
+  })
+  @Get()
+  async findAll() {
+    return await this.provinceService.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.provinceService.findOne(+id);
-  // }
-
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateProvinceDto: UpdateProvinceDto) {
-  // //   return this.provinceService.update(+id, updateProvinceDto);
-  // // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.provinceService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: ' حذف استان ',
+  })
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.provinceService.remove(+id);
+  }
 }

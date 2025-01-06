@@ -21,10 +21,11 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { AuthorizationGuard } from '../../auth/Guard/authorization.guard';
+import { Roles } from '../../../decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, AuthorizationGuard)
 @ApiBearerAuth()
 @Controller('address')
 export class AddressController {

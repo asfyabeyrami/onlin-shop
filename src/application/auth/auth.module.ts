@@ -18,7 +18,7 @@ import { UsersService } from '../users/users.service';
       global: true,
       secret: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: '1h',
+        expiresIn: '1d',
       },
     }),
   ],

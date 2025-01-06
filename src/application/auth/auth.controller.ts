@@ -34,6 +34,7 @@ import {
 } from 'src/DTO/admin.dto';
 import { MobilePipe } from 'src/pipe/mobile.pipe';
 import { UsersService } from '../users/users.service';
+import { Public } from '../../decorators/roles.decorator';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -55,6 +56,7 @@ export class AuthController {
     type: UserDto,
   })
   @UsePipes(new MobilePipe())
+  @Public()
   @Post('registerUser')
   @HttpCode(HttpStatus.OK)
   async registerUser(@Body() payload: RegisterUserDto) {
@@ -73,6 +75,7 @@ export class AuthController {
     type: ResLoginUserDto,
   })
   @ApiNotFoundResponse({ description: 'کاربر وجود ندارد' })
+  @Public()
   @Post('loginUser')
   @HttpCode(HttpStatus.OK)
   async loginUser(@Body() payload: LoginUserDto) {
@@ -131,6 +134,7 @@ export class AuthController {
   })
   @ApiNotFoundResponse({ description: 'ادمین وجود ندارد' })
   @Post('loginAdmin')
+  @Public()
   async loginAdmin(@Body() payload: LoginAdminDto) {
     return await this.authService.loginAdmin(payload);
   }

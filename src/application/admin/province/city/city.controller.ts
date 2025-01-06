@@ -8,12 +8,26 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { CityService } from './city.service';
-import { CreateCityDto } from 'src/DTO/address.dto';
-import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { CreateCityDto, UpdateCityDto } from 'src/DTO/address.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { CreateCategoryDto } from 'src/DTO/category.dto';
+import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
+import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
+import { User } from 'src/decorators/getFromReq.decorators';
 
+@UseGuards(AuthGuard, AuthorizationGuard)
+@ApiBearerAuth()
 @Controller('city')
 export class CityController {
   constructor(private readonly cityService: CityService) {}
@@ -30,28 +44,28 @@ export class CityController {
     description: 'شهر وارد شده با موفقیت ثبت شد',
   })
   @Post('createCity')
+  @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
-  createCity(@Body() createCityDto: CreateCityDto) {
-    return this.cityService.create(createCityDto);
+  async createCity(
+    @User('id') adminId: number,
+    @Body() createCityDto: CreateCityDto,
+  ) {
+    return await this.cityService.create(adminId, createCityDto);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.cityService.findAll();
-  // }
+  @ApiOperation({
+    summary: ' لیست شهر ها',
+  })
+  @Get()
+  async findAll() {
+    return await this.cityService.findAll();
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.cityService.findOne(+id);
-  // }
-
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateCityDto: UpdateCityDto) {
-  // //   return this.cityService.update(+id, updateCityDto);
-  // // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.cityService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: ' حذف شهر ',
+  })
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.cityService.remove(+id);
+  }
 }

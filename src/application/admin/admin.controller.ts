@@ -24,8 +24,9 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
+import { AuthorizationGuard } from '../auth/Guard/authorization.guard';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, AuthorizationGuard)
 @ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
