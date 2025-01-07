@@ -11,14 +11,12 @@ export class UserDataAccess {
     name: string,
     lastName: string,
     mobile: number,
-    password: string,
   ): Promise<Models.User> {
     const user = await Models.User.create({
       name,
       lastName,
       mobile,
       role: 'user',
-      password,
       isActive: true,
     });
     return user;

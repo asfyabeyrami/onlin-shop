@@ -56,11 +56,7 @@ export class OrderService {
     return await this.orderDataAccess.findByUserId(id);
   }
 
-  // update(id: number, updateOrderDto: UpdateOrderDto) {
-  //   return `This action updates a #${id} order`;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: number) {
+    return await this.orderDataAccess.remove(id);
   }
 }

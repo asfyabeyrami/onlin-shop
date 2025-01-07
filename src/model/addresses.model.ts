@@ -63,6 +63,6 @@ export class Address extends Model {
   @BelongsTo(() => User, 'userId')
   User: User;
 
-  @HasMany(() => City, 'cityId')
-  City: City[];
+  @BelongsTo(() => City, 'cityId')
+  City: City;
 }

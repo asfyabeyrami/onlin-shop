@@ -20,9 +20,13 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
+import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
+import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard)
 @ApiBearerAuth()
+@Roles(Role.USER)
 @Controller('basket')
 export class BasketController {
   constructor(private readonly basketService: BasketService) {}
@@ -40,8 +44,10 @@ export class BasketController {
   })
   @Post('createBasket')
   @HttpCode(HttpStatus.OK)
-  async createBasket(@Req() req, @Body() createBasketDto: CreateBasketDto) {
-    const userId = req.id;
+  async createBasket(
+    @User('id') userId: number,
+    @Body() createBasketDto: CreateBasketDto,
+  ) {
     const { productId, count } = createBasketDto;
     return await this.basketService.createBasket(userId, productId, count);
   }
@@ -51,19 +57,19 @@ export class BasketController {
   //   return this.basketService.findAll();
   // }
 
+  @ApiOperation({
+    summary: 'مشاهده سبد خرید',
+  })
   @Get('userBaskets')
-  async findOne(@Req() req) {
-    const userId = req.id;
+  async findOne(@User('id') userId: number) {
     return await this.basketService.findOne(userId);
   }
 
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateBasketDto: UpdateBasketDto) {
-  // //   return this.basketService.update(+id, updateBasketDto);
-  // // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.basketService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: 'حذف سبد خرید ',
+  })
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    return await this.basketService.remove(id);
+  }
 }

@@ -1,4 +1,4 @@
-import { Identifier } from 'sequelize';
+import { Identifier, where } from 'sequelize';
 import * as Models from '../model/index';
 import { HttpException } from '@nestjs/common';
 
@@ -32,12 +32,15 @@ export class CatDataAccess {
     );
   }
 
-  async findAllAsCat(categoryName: string): Promise<Models.Category[]> {
+  async findAllAsCat(title: string): Promise<Models.Category[]> {
     const products = await Models.Category.findAll({
+      where: {
+        title: title,
+      },
       include: [
         {
           model: Models.Product,
-          attributes: ['productName'],
+          attributes: ['productName', 'price', 'discount'],
         },
       ],
     });
@@ -53,6 +56,18 @@ export class CatDataAccess {
     return await Models.Category.findByPk(id);
   }
 
+  async findOne(id: number): Promise<Models.Category> {
+    return await Models.Category.findOne({
+      where: { id },
+      include: [
+        {
+          model: Models.Category,
+          as: 'parent',
+          attributes: ['id', 'title', 'fatherId'],
+        },
+      ],
+    });
+  }
   async remove(id: number): Promise<void> {
     const Category = await this.findById(id);
     return await Category.destroy();

@@ -30,6 +30,22 @@ export class ProvinceDataAccess {
     return await Models.City.findAll();
   }
 
+  async findAllCity(province: string) {
+    const city = await Models.Province.findAll({
+      where: {
+        province: province,
+      },
+      include: [
+        {
+          model: Models.City,
+          attributes: ['city'],
+        },
+      ],
+    });
+
+    return city;
+  }
+
   async findAllProvince(): Promise<Models.Province[]> {
     return await Models.Province.findAll();
   }

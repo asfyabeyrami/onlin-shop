@@ -5,6 +5,7 @@ import { CreateBasketDto } from 'src/DTO/basket.dto';
 @Injectable()
 export class BasketService {
   constructor(private readonly basketDataAccess: BasketDataAccess) {}
+
   async createBasket(userId: number, productId: number, count: number) {
     return await this.basketDataAccess.createBasket(userId, productId, count);
   }
@@ -26,7 +27,7 @@ export class BasketService {
   //   return `This action updates a #${id} basket`;
   // }
 
-  remove(id: number) {
-    return `This action removes a #${id} basket`;
+  async remove(id: number) {
+    return await this.basketDataAccess.remove(id);
   }
 }

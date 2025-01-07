@@ -8,7 +8,7 @@ export class ProductDataAccess {
     return Models.Product.tableName;
   }
   async findById(id: number): Promise<Models.Product> {
-    return Models.Product.findByPk(id);
+    return await Models.Product.findByPk(id);
   }
   async createProduct(
     adminId: number,
@@ -87,7 +87,7 @@ export class ProductDataAccess {
   }
 
   async findAll(): Promise<Models.Product[]> {
-    return await Models.Product.findAll();
+    return await Models.Product.findAll({ where: { isAvailable: true } });
   }
 
   async findAllAsCat(categoryName: string): Promise<Models.Product[]> {

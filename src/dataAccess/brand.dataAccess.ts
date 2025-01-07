@@ -1,6 +1,7 @@
 import { Identifier } from 'sequelize';
 import * as Models from '../model/index';
 import { HttpException } from '@nestjs/common';
+import { UpdatedAt } from 'sequelize-typescript';
 
 export class BrandDataAccess {
   tableName() {
@@ -24,14 +25,31 @@ export class BrandDataAccess {
 
   async updateBrand(
     id: number,
+    adminId: number,
     brandName: string,
     picUrl: string,
     description: string,
   ) {
     return await Models.Brand.update(
-      { brandName, picUrl, description },
+      { adminId, brandName, picUrl, description, UpdatedAt },
       { where: { id } },
     );
+  }
+
+  async findAllbrand(brandName: string) {
+    const product = await Models.Brand.findAll({
+      where: {
+        brandName: brandName,
+      },
+      include: [
+        {
+          model: Models.Product,
+          attributes: ['productName'],
+        },
+      ],
+    });
+
+    return product;
   }
 
   async findAll(): Promise<Models.Brand[]> {

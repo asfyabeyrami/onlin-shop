@@ -18,10 +18,6 @@ export class UserDto {
   mobile: number;
 
   @IsNotEmpty()
-  @ApiProperty({ type: String })
-  password: string;
-
-  @IsNotEmpty()
   @ApiProperty({ type: Boolean })
   isActive: boolean;
 
@@ -45,10 +41,6 @@ export class RegisterUserDto {
 
   @IsNotEmpty()
   @ApiProperty({ type: String })
-  password: string;
-
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
   mobile: number;
 }
 
@@ -56,11 +48,8 @@ export class LoginUserDto {
   @IsNotEmpty()
   @ApiProperty({ type: String })
   mobile: number;
-
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
-  password: string;
 }
+
 export class ResLoginUserDto {
   @ApiProperty({ type: Number })
   status: number;

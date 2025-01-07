@@ -19,11 +19,12 @@ import {
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
-import { CreateAddressDto } from 'src/DTO/address.dto';
-import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
+import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard)
 @ApiBearerAuth()
+@Roles(Role.USER)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
@@ -41,8 +42,10 @@ export class OrderController {
   })
   @Post('createOrder')
   @HttpCode(HttpStatus.OK)
-  async createOrder(@Req() req, @Body() createOrderDto: CreateOrderDto) {
-    const userId = req.id;
+  async createOrder(
+    @User('id') userId: number,
+    @Body() createOrderDto: CreateOrderDto,
+  ) {
     const { basketId, addressId, delivery, paymentMethod } = createOrderDto;
     return await this.orderService.create(
       userId,
@@ -53,24 +56,20 @@ export class OrderController {
     );
   }
 
-  @Get('orders')
-  findAll() {
-    return this.orderService.findAll();
-  }
-
+  @ApiOperation({
+    summary: 'مشاهده سفارش',
+  })
   @Get('userOrder')
   async findOne(@Req() req) {
     const userId = req.id;
     return await this.orderService.findOne(userId);
   }
 
-  // // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-  // //   return this.orderService.update(+id, updateOrderDto);
-  // // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.orderService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: 'حذف سفارش',
+  })
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    return await this.orderService.remove(id);
+  }
 }

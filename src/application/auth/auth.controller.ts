@@ -33,16 +33,14 @@ import {
   RegisterAdminDto,
 } from 'src/DTO/admin.dto';
 import { MobilePipe } from 'src/pipe/mobile.pipe';
-import { UsersService } from '../users/users.service';
-import { Public } from '../../decorators/roles.decorator';
+import { Public, Roles } from '../../decorators/roles.decorator';
+import { User } from 'src/decorators/getFromReq.decorators';
+import { Role } from 'src/common/eNums/role.enum';
 
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private userService: UsersService,
-  ) {}
+  constructor(private authService: AuthService) {}
   // register user************************************************************
   @ApiOperation({
     summary: 'ثبت نام کاربر',
@@ -90,10 +88,10 @@ export class AuthController {
     description: 'user logout',
     type: Boolean,
   })
+  @Public()
   @Post('logOutUser')
   @HttpCode(HttpStatus.OK)
-  async logOut(@Req() req): Promise<boolean> {
-    const userId = req.id;
+  async logOut(@User('id') userId: number): Promise<boolean> {
     try {
       await this.authService.logOutUser(userId);
     } catch (e) {
@@ -114,6 +112,7 @@ export class AuthController {
     description: 'admin login successful',
     type: RegisterAdminDto,
   })
+  @Public()
   @Post('registerAdmin')
   @HttpCode(HttpStatus.OK)
   async registerAdmin(@Body() payload: RegisterAdminDto) {
@@ -133,8 +132,8 @@ export class AuthController {
     type: AdminDto,
   })
   @ApiNotFoundResponse({ description: 'ادمین وجود ندارد' })
-  @Post('loginAdmin')
   @Public()
+  @Post('loginAdmin')
   async loginAdmin(@Body() payload: LoginAdminDto) {
     return await this.authService.loginAdmin(payload);
   }
@@ -147,10 +146,10 @@ export class AuthController {
     description: 'admin logout',
     type: Boolean,
   })
-  @Post('logOutAdmin')
   @HttpCode(HttpStatus.OK)
-  async logOutAdmin(@Req() req): Promise<boolean> {
-    const adminId = req.id;
+  @Public()
+  @Post('logOutAdmin')
+  async logOutAdmin(@User('id') adminId: number): Promise<boolean> {
     try {
       await this.authService.logOutAdmin(adminId);
     } catch (e) {
@@ -162,8 +161,9 @@ export class AuthController {
   @ApiOperation({
     summary: 'غیرفعال کردن کاربر',
   })
+  @Roles(Role.ADMIN)
   @Patch(':id')
   async deActiveUser(@Param('id') id: number) {
-    return await this.userService.deActiveUser(id);
+    return await this.authService.deActiveUser(id);
   }
 }

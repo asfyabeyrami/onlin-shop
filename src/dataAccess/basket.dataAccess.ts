@@ -75,4 +75,13 @@ export class BasketDataAccess {
     });
     return result;
   }
+
+  async findByIdForDelete(id: number) {
+    return await Models.Basket.findByPk(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    const basket = await this.findByIdForDelete(id);
+    return await basket.destroy();
+  }
 }

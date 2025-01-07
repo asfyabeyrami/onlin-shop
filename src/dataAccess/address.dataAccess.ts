@@ -41,6 +41,12 @@ export class AddressDataAccess {
   async findAll(userId: number): Promise<Models.Address[]> {
     return await Models.Address.findAll({
       where: { userId },
+      include: [
+        {
+          model: Models.City,
+          attributes: ['city'],
+        },
+      ],
     });
   }
 

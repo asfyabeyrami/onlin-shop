@@ -41,4 +41,13 @@ export class OrderDataAccess {
       },
     });
   }
+
+  async findById(id: number) {
+    return await Models.Order.findByPk(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    const basket = await this.findById(id);
+    return await basket.destroy();
+  }
 }

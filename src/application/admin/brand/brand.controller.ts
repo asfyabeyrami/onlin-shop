@@ -21,14 +21,11 @@ import {
 } from '@nestjs/swagger';
 import { CreateBrandDto, UpdateBrandDto } from 'src/DTO/brand.dto';
 import { User } from 'src/decorators/getFromReq.decorators';
-import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
-import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 
-@UseGuards(AuthGuard, AuthorizationGuard)
-@Roles(Role.ADMIN)
 @ApiBearerAuth()
+@Roles(Role.ADMIN)
 @Controller('brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
@@ -84,10 +81,11 @@ export class BrandController {
   })
   @Put(':id')
   async update(
+    @User('id') adminId: number,
     @Param('id') id: number,
     @Body() updateBrandDto: UpdateBrandDto,
   ) {
-    return await this.brandService.update(id, updateBrandDto);
+    return await this.brandService.update(id, adminId, updateBrandDto);
   }
 
   @ApiOperation({

@@ -24,13 +24,10 @@ import {
   NotAvailableProductDto,
   UpdateProductDto,
 } from 'src/DTO/product.dto';
-import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
-import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard, AuthorizationGuard)
 @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('product')
@@ -144,7 +141,7 @@ export class ProductController {
     summary: 'حذف محصول ',
   })
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.productService.remove(+id);
+  async remove(@Param('id') id: number) {
+    return await this.productService.remove(+id);
   }
 }

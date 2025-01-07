@@ -26,7 +26,6 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard, AuthorizationGuard)
 @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('category')

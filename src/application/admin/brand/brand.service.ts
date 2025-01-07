@@ -27,11 +27,12 @@ export class BrandService {
     return await this.brandDataAccess.findById(id);
   }
 
-  async update(id: number, updateBrandDto: UpdateBrandDto) {
+  async update(id: number, adminId: number, updateBrandDto: UpdateBrandDto) {
     const { brandName, picUrl, description } = updateBrandDto;
     try {
       await this.brandDataAccess.updateBrand(
         id,
+        adminId,
         brandName,
         picUrl,
         description,

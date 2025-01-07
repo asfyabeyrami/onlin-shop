@@ -22,6 +22,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthorizationGuard } from './application/auth/Guard/authorization.guard';
 import { AuthGuard } from './application/auth/Guard/auth.guard';
 
+
 @Module({
   imports: [
     SequelizeModule.forRoot({

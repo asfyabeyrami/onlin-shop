@@ -19,7 +19,7 @@ export class CategoryService {
   }
 
   async findOne(id: number) {
-    return await this.catDataAccess.findById(id);
+    return await this.catDataAccess.findOne(id);
   }
 
   async update(
