@@ -3,6 +3,7 @@ import { BasketService } from './basket.service';
 import { BasketController } from './basket.controller';
 import { BasketProductModule } from './basket-product/basket-product.module';
 import { BasketDataAccess } from 'src/dataAccess/basket.dataAccess';
+import { ProductDataAccess } from 'src/dataAccess/product.dataAccess';
 
 @Module({
   imports: [BasketProductModule],

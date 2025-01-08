@@ -11,6 +11,7 @@ import {
   Brand,
   Category,
   City,
+  Comment,
   Order,
   Product,
   Province,
@@ -21,7 +22,6 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthorizationGuard } from './application/auth/Guard/authorization.guard';
 import { AuthGuard } from './application/auth/Guard/auth.guard';
-
 
 @Module({
   imports: [
@@ -44,6 +44,7 @@ import { AuthGuard } from './application/auth/Guard/auth.guard';
         Basket,
         Order,
         BasketProduct,
+        Comment,
       ],
       autoLoadModels: true,
       synchronize: true,

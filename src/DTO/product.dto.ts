@@ -82,3 +82,19 @@ export class NotAvailableProductDto {
   @ApiProperty({ type: String })
   productName: string;
 }
+
+export class CreateCommentDto {
+  @IsOptional()
+  @ApiProperty({ type: String })
+  productId: number;
+
+  @IsOptional()
+  @ApiProperty({ type: String })
+  comment: string;
+}
+
+export class UpdateCommentDto {
+  @IsOptional()
+  @ApiProperty({ type: String })
+  comment: string;
+}

@@ -11,6 +11,7 @@ import Sequelize from 'sequelize';
 import { Order } from './orders.model';
 import { Basket } from './basket.model';
 import { Address } from './addresses.model';
+import { Comment } from './comments.model';
 
 @Table({
   tableName: 'users',
@@ -87,4 +88,7 @@ export class User extends Model {
 
   @HasMany(() => Address, 'userId')
   address: Address[];
+
+  @HasMany(() => Comment, 'userId')
+  comment: Comment[];
 }

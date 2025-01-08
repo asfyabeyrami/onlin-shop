@@ -142,6 +142,13 @@ export class BasketDataAccess {
     });
   }
 
+  async checkAvailable(productId: number): Promise<Models.Product> {
+    const product = await Models.Product.findOne({
+      where: { id: productId, isAvailable: true },
+    });
+    return product;
+  }
+
   async remove(id: number): Promise<void> {
     const basket = await this.findByIdForDelete(id);
     return await basket.destroy();

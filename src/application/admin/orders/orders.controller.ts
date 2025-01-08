@@ -76,7 +76,7 @@ export class OrdersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.ordersService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.ordersService.remove(id);
   }
 }

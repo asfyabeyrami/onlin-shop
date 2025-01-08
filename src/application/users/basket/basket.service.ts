@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { BasketDataAccess } from 'src/dataAccess/basket.dataAccess';
+import { ProductDataAccess } from 'src/dataAccess/product.dataAccess';
 import { CreateBasketDto } from 'src/DTO/basket.dto';
 
 @Injectable()
@@ -7,6 +8,10 @@ export class BasketService {
   constructor(private readonly basketDataAccess: BasketDataAccess) {}
 
   async createBasket(userId: number, productId: number, count: number) {
+    const isAvailable = await this.basketDataAccess.checkAvailable(productId);
+    if (!isAvailable) {
+      throw new HttpException('موجود نیست', 403);
+    }
     return await this.basketDataAccess.createBasket(userId, productId, count);
   }
 

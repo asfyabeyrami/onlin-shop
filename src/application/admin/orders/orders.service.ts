@@ -25,14 +25,16 @@ export class OrdersService {
   }
 
   async update(id: number) {
-    return await this.orderDataAccess.updateStatus(id);
+    await this.orderDataAccess.updateStatus(id);
+    const product = await this.orderDataAccess.findProdutId(id);
+    await this.orderDataAccess.decreaseProduct(product.id);
   }
 
   async finish(id: number) {
     return await this.orderDataAccess.finish(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(id: number) {
+    return await this.orderDataAccess.remove(id);
   }
 }

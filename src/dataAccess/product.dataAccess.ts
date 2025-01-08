@@ -10,12 +10,26 @@ export class ProductDataAccess {
   async findById(id: number): Promise<Models.Product> {
     return await Models.Product.findByPk(id);
   }
+
+  async findByForUser(id: number): Promise<Models.Product> {
+    return await Models.Product.findOne({
+      where: { id },
+      include: [
+        {
+          model: Models.Comment,
+          attributes: ['comment'],
+          include: [{ model: Models.User, attributes: ['name'] }],
+        },
+      ],
+    });
+  }
   async createProduct(
     adminId: number,
     brandId: number,
     categoryId: number,
     productName: string,
     pCode: number,
+    isAvailable: boolean,
     count: number,
     price: number,
     discount: number,
@@ -28,7 +42,7 @@ export class ProductDataAccess {
       categoryId,
       productName,
       pCode,
-      isAvailable: true,
+      isAvailable,
       count,
       price,
       discount,
@@ -86,8 +100,12 @@ export class ProductDataAccess {
     );
   }
 
-  async findAll(): Promise<Models.Product[]> {
+  async findAllForUser(): Promise<Models.Product[]> {
     return await Models.Product.findAll({ where: { isAvailable: true } });
+  }
+
+  async findAll(): Promise<Models.Product[]> {
+    return await Models.Product.findAll();
   }
 
   async findAllAsCat(categoryName: string): Promise<Models.Product[]> {
