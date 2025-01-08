@@ -1,40 +1,67 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsNumber,
+  IsString,
+  Min,
+  Max,
+  Length,
+  IsUrl,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsOptional()
+  @IsNumber()
+  @Min(1)
   @ApiProperty({ type: String })
   brandId: number;
 
   @IsOptional()
+  @IsNumber()
+  @Min(1)
   @ApiProperty({ type: String })
   categoryId: number;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'نام محصول نمی‌تواند خالی باشد' })
+  @IsString()
+  @Length(2, 100, { message: 'نام محصول باید بین ۲ تا ۱۰۰ کاراکتر باشد' })
   @ApiProperty({ type: String })
   productName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'کد محصول نمی‌تواند خالی باشد' })
+  @IsNumber()
+  @Min(1000)
   @ApiProperty({ type: String })
   pCode: number;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'تعداد محصول نمی‌تواند خالی باشد' })
+  @IsNumber()
+  @Min(0, { message: 'تعداد محصول نمی‌تواند منفی باشد' })
   @ApiProperty({ type: String })
   count: number;
 
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'قیمت محصول نمی‌تواند خالی باشد' })
+  @IsNumber()
+  @Min(1000, { message: 'قیمت محصول باید حداقل ۱۰۰۰ تومان باشد' })
+  @ApiProperty({ type: String, description: 'قیمت محصول به تومان' })
   price: number;
 
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'درصد تخفیف نمی‌تواند خالی باشد' })
+  @IsNumber()
+  @Min(0, { message: 'درصد تخفیف نمی‌تواند منفی باشد' })
+  @Max(100, { message: 'درصد تخفیف نمی‌تواند بیشتر از ۱۰۰ باشد' })
+  @ApiProperty({ type: String, description: 'عدد به درصد محاصبه خواهد شد' })
   discount: number;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'آدرس تصویر نمی‌تواند خالی باشد' })
+  @IsUrl({}, { message: 'لطفا یک آدرس URL معتبر وارد کنید' })
   @ApiProperty({ type: String })
   picUrl: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'توضیحات محصول نمی‌تواند خالی باشد' })
+  @IsString()
+  @Length(10, 1000, { message: 'توضیحات باید بین ۱۰ تا ۱۰۰۰ کاراکتر باشد' })
   @ApiProperty({ type: String })
   description: string;
 }
@@ -88,8 +115,9 @@ export class CreateCommentDto {
   @ApiProperty({ type: String })
   productId: number;
 
-  @IsOptional()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'متن نظر نمی‌تواند خالی باشد' })
+  @IsString()
+  @Length(10, 1000, { message: 'متن نظر باید بین ۱۰ تا ۱۰۰۰ کاراکتر باشد' })
   comment: string;
 }
 

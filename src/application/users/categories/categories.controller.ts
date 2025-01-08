@@ -9,8 +9,10 @@ import {
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { Public } from 'src/decorators/roles.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CacheService } from 'src/cache/cache.service';
 
+@ApiTags('category')
 @Public()
 @Controller('categories')
 export class CategoriesController {

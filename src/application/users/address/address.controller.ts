@@ -19,6 +19,7 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
 import { AuthorizationGuard } from '../../auth/Guard/authorization.guard';
@@ -27,6 +28,7 @@ import { Role } from 'src/common/eNums/role.enum';
 import { ProvinceDataAccess } from 'src/dataAccess/province.dataAccess';
 import { User } from 'src/decorators/getFromReq.decorators';
 
+@ApiTags('userAddress')
 @ApiBearerAuth()
 @Roles(Role.USER)
 @Controller('address')

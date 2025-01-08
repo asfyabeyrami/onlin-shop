@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, Length, Min } from 'class-validator';
 
 export class CreateCategoryDto {
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'عنوان دسته‌بندی نمی‌تواند خالی باشد' })
+  @IsString()
+  @Length(2, 100, { message: 'عنوان دسته‌بندی باید بین ۲ تا ۱۰۰ کاراکتر باشد' })
   title: string;
 
   @IsOptional()
-  @ApiProperty({ type: String })
+  @IsNumber()
+  @Min(1, { message: 'شناسه دسته‌بندی پدر باید عددی مثبت باشد' })
   fatherId: number;
 }
 

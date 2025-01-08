@@ -9,8 +9,9 @@ import {
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Public } from 'src/decorators/roles.decorator';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('product')
 @Public()
 @Controller('products')
 export class ProductsController {

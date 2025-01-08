@@ -8,12 +8,13 @@ import {
   Delete,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { CreateCommentDto, UpdateCommentDto } from 'src/DTO/product.dto';
 import { User } from 'src/decorators/getFromReq.decorators';
 
+@ApiTags('userComment')
 @ApiBearerAuth()
 @Roles(Role.USER)
 @Controller('comment')

@@ -2,6 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './application/users/users.module';
 import { AdminModule } from './application/admin/admin.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 import {
   Address,
@@ -25,13 +26,17 @@ import { AuthGuard } from './application/auth/Guard/auth.guard';
 
 @Module({
   imports: [
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 60000,
+    }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
+      host: process.env.HOST,
       port: 5432,
-      username: 'asfya',
-      password: '0521675413',
-      database: 'shop',
+      username: process.env.ADMIN_NAME,
+      password: process.env.DB_PASS,
+      database: process.env.DB_NAME,
       models: [
         User,
         Admin,

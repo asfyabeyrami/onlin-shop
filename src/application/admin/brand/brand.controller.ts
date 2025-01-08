@@ -18,12 +18,14 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CreateBrandDto, UpdateBrandDto } from 'src/DTO/brand.dto';
 import { User } from 'src/decorators/getFromReq.decorators';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 
+@ApiTags('adminBrands')
 @ApiBearerAuth()
 @Roles(Role.ADMIN)
 @Controller('brand')

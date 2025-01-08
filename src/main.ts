@@ -20,16 +20,41 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('API مستندات')
-    .setDescription('توضیحات API')
+    .setTitle('SHOP')
+    .setDescription('Api Documentation')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addTag('auth', 'احراز هویت')
+    .addTag('adminBrands', 'مدیریت برندها')
+    .addTag('adminCategories', 'مدیریت دسته‌بندی‌ها')
+    .addTag('adminProduct', 'مدیریت محصولات')
+    .addTag('adminOrders', 'مدیریت سفارشات')
+    .addTag('adminProvince', 'مدیریت استان ها')
+    .addTag('adminCity', 'مدیریت استان ها')
+    .addTag('userBasket', 'سبد خرید')
+    .addTag('userOrder', 'سفارش کاربران')
+    .addTag('userAddress', 'آدرس کاربران')
+    .addTag('brand', 'برند ها')
+    .addTag('product', 'محصولات')
+    .addTag('category', 'دسته بندی')
+    .addTag('userComment', 'کامنت ها')
+
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.APP_PORT);
   console.log(`app running on : ${await app.getUrl()}`);
 }
 bootstrap();
