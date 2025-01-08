@@ -93,6 +93,32 @@ export class OrderDataAccess {
     });
   }
 
+  async findProdutId(id: number): Promise<Models.Order> {
+    return await Models.Order.findOne({
+      where: {
+        id,
+      },
+      include: [
+        {
+          model: Models.Basket,
+          include: [
+            {
+              model: Models.BasketProduct,
+              attributes: ['productId'],
+            },
+          ],
+        },
+      ],
+    });
+  }
+
+  async decreaseProduct(id: number) {
+    const product = await Models.Product.findByPk(id);
+    if (!product) throw new Error('محصول یافت نشد');
+
+    return await product.update({ count: product.count - 1 });
+  }
+
   async findByOrderId(id: number): Promise<Models.Order[]> {
     return await Models.Order.findAll({
       where: {

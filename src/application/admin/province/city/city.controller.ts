@@ -3,13 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
   HttpStatus,
-  UseGuards,
-  Put,
 } from '@nestjs/common';
 import { CityService } from './city.service';
 import { CreateCityDto, UpdateCityDto } from 'src/DTO/address.dto';
@@ -18,15 +15,14 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
-import { CreateCategoryDto } from 'src/DTO/category.dto';
-import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
-import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard, AuthorizationGuard)
+@ApiTags('adminCity')
+@Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('city')
 export class CityController {

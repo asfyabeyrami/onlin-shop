@@ -18,14 +18,14 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { CreateCategoryDto, UpdateCategoryDto } from 'src/DTO/category.dto';
-import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
-import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { User } from 'src/decorators/getFromReq.decorators';
 
+@ApiTags('adminCategories')
 @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('category')

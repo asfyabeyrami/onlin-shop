@@ -17,12 +17,17 @@ export class ProductService {
     picUrl: string,
     description: string,
   ) {
+    let isAvailable = null;
+    if (count == 0 || count == null) {
+      isAvailable = false;
+    }
     return await this.productDataAccess.createProduct(
       adminId,
       brandId,
       categoryId,
       productName,
       pCode,
+      isAvailable,
       count,
       price,
       discount,

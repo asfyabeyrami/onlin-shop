@@ -11,8 +11,9 @@ import {
 import { OrdersService } from './orders.service';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('adminOrders')
 @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('orders')
@@ -76,7 +77,7 @@ export class OrdersController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.ordersService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.ordersService.remove(id);
   }
 }

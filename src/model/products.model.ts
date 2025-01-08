@@ -14,6 +14,7 @@ import { Admin } from './admin.model';
 import { Category } from './categories.model';
 import { Brand } from './brands.model';
 import { BasketProduct } from './basketProduct.model';
+import { Comment } from './comments.model';
 
 @Table({
   tableName: 'products',
@@ -116,6 +117,9 @@ export class Product extends Model {
 
   @HasMany(() => BasketProduct, 'productId')
   basketProducts: BasketProduct[];
+
+  @HasMany(() => Comment, 'productId')
+  comment: Comment[];
 
   @BelongsTo(() => Admin, 'adminId')
   admin: Admin;

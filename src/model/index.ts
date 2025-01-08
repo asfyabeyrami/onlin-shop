@@ -9,3 +9,4 @@ export { Product } from './products.model';
 export { Basket } from './basket.model';
 export { BasketProduct } from './basketProduct.model';
 export { Order } from './orders.model';
+export { Comment } from './comments.model';

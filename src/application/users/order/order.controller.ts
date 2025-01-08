@@ -18,11 +18,13 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { User } from 'src/decorators/getFromReq.decorators';
 
+@ApiTags('userOrder')
 @ApiBearerAuth()
 @Roles(Role.USER)
 @Controller('order')

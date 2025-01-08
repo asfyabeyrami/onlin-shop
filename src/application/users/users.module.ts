@@ -10,9 +10,12 @@ import { AddressDataAccess } from 'src/dataAccess/address.dataAccess';
 import { OrderService } from './order/order.service';
 import { OrderDataAccess } from 'src/dataAccess/order.dataAccess';
 import { ProvinceDataAccess } from 'src/dataAccess/province.dataAccess';
+import { BrandsModule } from './brand/brand.module';
+import { ProductsModule } from './products/products.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
-  imports: [BasketModule, OrderModule, AddressModule],
+  imports: [BasketModule, OrderModule, AddressModule, BrandsModule, ProductsModule, CategoriesModule],
   controllers: [],
   providers: [
     UserDataAccess,

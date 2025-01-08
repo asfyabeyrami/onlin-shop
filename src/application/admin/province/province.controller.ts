@@ -3,11 +3,8 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
-  UseGuards,
-  Req,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -19,13 +16,13 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiTags,
 } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
-import { AuthorizationGuard } from 'src/application/auth/Guard/authorization.guard';
 import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard, AuthorizationGuard)
+@ApiTags('adminProvince')
 @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('province')

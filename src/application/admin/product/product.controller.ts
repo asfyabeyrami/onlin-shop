@@ -18,6 +18,8 @@ import {
   ApiBody,
   ApiOkResponse,
   ApiOperation,
+  ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import {
   CreateProductDto,
@@ -28,6 +30,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
 import { User } from 'src/decorators/getFromReq.decorators';
 
+@ApiTags('adminProduct')
 @Roles(Role.ADMIN)
 @ApiBearerAuth()
 @Controller('product')
@@ -35,16 +38,17 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   //create product ***************************************************
-  @ApiOperation({
-    summary: 'ایجاد محصولات',
-  })
-  @ApiBody({
+  @ApiOperation({ summary: 'ایجاد محصول جدید' })
+  @ApiResponse({
+    status: 201,
+    description: 'محصول با موفقیت ایجاد شد',
     type: CreateProductDto,
-    description: 'ایجاد محصولات',
   })
-  @ApiOkResponse({
-    description: 'محصول با موفقیت ثبت شد',
+  @ApiResponse({
+    status: 400,
+    description: 'داده‌های ورودی نامعتبر است',
   })
+  @ApiBody({ type: CreateProductDto })
   @Post('createProduct')
   @HttpCode(HttpStatus.OK)
   async createProduct(

@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString, Length, IsMobilePhone, IsBoolean } from 'class-validator';
+
 export class UserDto {
   @IsNotEmpty()
   @ApiProperty({ type: Number })
@@ -31,17 +32,22 @@ export class UserDto {
 }
 
 export class RegisterUserDto {
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'نام نمی‌تواند خالی باشد' })
+  @IsString()
+  @Length(2, 50, { message: 'نام باید بین ۲ تا ۵۰ کاراکتر باشد' })
   name: string;
 
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'نام خانوادگی نمی‌تواند خالی باشد' })
+  @IsString()
+  @Length(2, 50, { message: 'نام خانوادگی باید بین ۲ تا ۵۰ کاراکتر باشد' })
   lastName: string;
 
-  @IsNotEmpty()
-  @ApiProperty({ type: String })
+  @IsNotEmpty({ message: 'شماره موبایل نمی‌تواند خالی باشد' })
+  @IsMobilePhone('fa-IR', {}, { message: 'لطفا یک شماره موبایل معتبر ایران وارد کنید' })
   mobile: number;
+
+  @IsBoolean()
+  isActive: boolean;
 }
 
 export class LoginUserDto {
