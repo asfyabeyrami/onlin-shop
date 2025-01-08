@@ -4,10 +4,6 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 export class CreateOrderDto {
   @IsOptional()
   @ApiProperty({ type: String })
-  basketId: number;
-
-  @IsOptional()
-  @ApiProperty({ type: String })
   addressId: number;
 
   @IsOptional()

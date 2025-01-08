@@ -46,10 +46,9 @@ export class OrderController {
     @User('id') userId: number,
     @Body() createOrderDto: CreateOrderDto,
   ) {
-    const { basketId, addressId, delivery, paymentMethod } = createOrderDto;
+    const { addressId, delivery, paymentMethod } = createOrderDto;
     return await this.orderService.create(
       userId,
-      basketId,
       addressId,
       delivery,
       paymentMethod,
@@ -60,8 +59,7 @@ export class OrderController {
     summary: 'مشاهده سفارش',
   })
   @Get('userOrder')
-  async findOne(@Req() req) {
-    const userId = req.id;
+  async findOne(@User('id') userId: number) {
     return await this.orderService.findOne(userId);
   }
 

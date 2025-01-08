@@ -10,34 +10,39 @@ export class OrderService {
   ) {}
   async create(
     userId: number,
-    basketId: number,
     addressId: number,
     delivery: string,
     paymentMethod: string,
   ) {
-    const basketProducts = await this.basketDataAccess.findByBasketId(basketId);
+    // 1. ادغام همه سبدهای خرید
+    const mergedBasket = await this.basketDataAccess.mergeBaskets(userId);
+
+    // 2. دریافت محصولات سبد ادغام شده
+    const basketProducts = await this.basketDataAccess.findByBasketId(
+      mergedBasket.id,
+    );
 
     let finalPrice = 0;
     let totalPrice = 0;
     let totalDiscount = 0;
 
+    // 3. محاسبه قیمت‌ها
     basketProducts.forEach((basketProduct) => {
       let price = basketProduct.product.price;
       const discount = basketProduct.product.discount;
-      const count = basketProduct.product.count;
+      const count = basketProduct.count;
 
       totalPrice += price * count;
-
       const productDiscount = price * (discount / 100);
       totalDiscount += productDiscount * count;
-
       const discountedPrice = price - productDiscount;
       finalPrice += discountedPrice * count;
     });
 
-    return this.orderDataAccess.createOrder(
+    // 4. ایجاد سفارش
+    const order = await this.orderDataAccess.createOrder(
       userId,
-      basketId,
+      mergedBasket.id,
       addressId,
       delivery,
       paymentMethod,
@@ -45,6 +50,12 @@ export class OrderService {
       totalDiscount,
       finalPrice,
     );
+
+    // 5. پاکسازی سبد خرید و محصولات آن بعد از ایجاد سفارش
+    // await this.basketDataAccess.removeBasketProducts(mergedBasket.id);
+    // await this.basketDataAccess.remove(mergedBasket.id);
+
+    return order;
   }
 
   async findAll() {

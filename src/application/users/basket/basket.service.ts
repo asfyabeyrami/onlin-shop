@@ -10,18 +10,23 @@ export class BasketService {
     return await this.basketDataAccess.createBasket(userId, productId, count);
   }
 
-  findAll() {
-    return `This action returns all basket`;
-  }
+  async findBasketByUserId(id: number) {
+    // دریافت تمام سبدهای کاربر
+    const baskets = await this.basketDataAccess.findAllBasketByUserId(id);
 
-  async findOne(id: number) {
-    const basket = await this.basketDataAccess.findBasketByUserId(id);
+    if (!baskets.length) {
+      throw new Error('هیچ سبد خریدی برای این کاربر یافت نشد');
+    }
 
-    const productIds = basket.flatMap((basket) =>
+    // استخراج آیدی محصولات از تمام سبدها
+    const productIds = baskets.flatMap((basket) =>
       basket.BasketProduct.map((basketProduct) => basketProduct.productId),
     );
-    const products = await this.basketDataAccess.findBasketByUserId(id);
-    return products;
+
+    // به نظر می‌رسد این خط اشتباه است چون دوباره همان متد را صدا می‌زند
+    // const products = await this.basketDataAccess.findBasketByUserId(id);
+
+    return baskets; // مستقیماً سبدها را برمی‌گردانیم
   }
   // update(id: number, updateBasketDto: UpdateBasketDto) {
   //   return `This action updates a #${id} basket`;

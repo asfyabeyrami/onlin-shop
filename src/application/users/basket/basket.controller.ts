@@ -62,7 +62,7 @@ export class BasketController {
   })
   @Get('userBaskets')
   async findOne(@User('id') userId: number) {
-    return await this.basketService.findOne(userId);
+    return await this.basketService.findBasketByUserId(userId);
   }
 
   @ApiOperation({
