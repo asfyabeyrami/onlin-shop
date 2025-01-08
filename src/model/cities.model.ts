@@ -43,8 +43,8 @@ export class City extends Model {
 
   // Relations
 
-  @BelongsTo(() => Address, 'cityId')
-  Address: Address;
+  @HasMany(() => Address, 'cityId')
+  Address: Address[];
 
   @BelongsTo(() => Province, 'provinceId')
   province: Province;

@@ -21,11 +21,14 @@ import {
   ApiOperation,
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/application/auth/Guard/auth.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { AuthorizationGuard } from '../../auth/Guard/authorization.guard';
+import { Roles } from '../../../decorators/roles.decorator';
 import { Role } from 'src/common/eNums/role.enum';
+import { ProvinceDataAccess } from 'src/dataAccess/province.dataAccess';
+import { User } from 'src/decorators/getFromReq.decorators';
 
-@UseGuards(AuthGuard)
 @ApiBearerAuth()
+@Roles(Role.USER)
 @Controller('address')
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
@@ -43,8 +46,10 @@ export class AddressController {
   })
   @Post('createAddress')
   @HttpCode(HttpStatus.OK)
-  async createAddress(@Req() req, @Body() createBasketDto: CreateAddressDto) {
-    const userId = req.id;
+  async createAddress(
+    @User('id') userId: number,
+    @Body() createBasketDto: CreateAddressDto,
+  ) {
     const { cityId, address, zipCode } = createBasketDto;
     return await this.addressService.create(userId, cityId, address, zipCode);
   }
@@ -69,17 +74,28 @@ export class AddressController {
     return `{آدرس شما تغییر یافت}`;
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.addressService.findAll();
-  // }
+  @ApiOperation({
+    summary: 'لیست استان ها ',
+  })
+  @Get('Province')
+  async findAllProvince() {
+    return await this.addressService.findAllProvince();
+  }
 
   @ApiOperation({
-    summary: 'پیدا کردن آدرس های یک کاربر با آی دی',
+    summary: 'لیست شهر ها',
   })
-  @Get(':id')
+  @Get('city/:province')
+  async findAllCity(@Param('province') province: string) {
+    return await this.addressService.findAllCity(province);
+  }
+
+  @ApiOperation({
+    summary: 'پیدا کردن آدرس های یک کاربر ',
+  })
+  @Get('findUserAddress')
   @Roles(Role.USER)
-  findAll(@Param('id') userId: number) {
+  findAll(@User('id') userId: number) {
     return this.addressService.findAll(userId);
   }
 

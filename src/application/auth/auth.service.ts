@@ -27,9 +27,9 @@ export class AuthService {
   ) {}
 
   async register(payload: RegisterUserDto): Promise<UserDto> {
-    const { name, lastName, mobile, password } = payload;
+    const { name, lastName, mobile } = payload;
 
-    if (!name || !lastName || !mobile || !password) {
+    if (!name || !lastName || !mobile) {
       throw new HttpException('همه فیلد ها الزامیست', 404);
     }
 
@@ -39,31 +39,18 @@ export class AuthService {
       throw new HttpException('شماره مبایل تکراری میباشد', 404);
     }
 
-    const passChecking = await this.userDataAccess.findByPass(password);
-
-    if (passChecking) {
-      throw new HttpException('پسورد تکراری میباشد', 404);
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = await this.userDataAccess.createUser(
-      name,
-      lastName,
-      mobile,
-      hashedPassword,
-    );
+    const user = await this.userDataAccess.createUser(name, lastName, mobile);
     return user;
   }
 
-  async login(payload: LoginUserDto): Promise<{
+  async login(loginData: LoginUserDto): Promise<{
     status: number;
     massege?: string;
     error?: string;
   }> {
-    const { mobile, password } = payload;
-    if (!mobile || !password) {
-      throw new HttpException('همه فیلد ها الزامیست', 404);
+    const { mobile } = loginData;
+    if (!mobile) {
+      throw new HttpException(' فیلد الزامیست', 404);
     }
 
     const user = await this.userDataAccess.findByMobile(mobile);
@@ -71,15 +58,13 @@ export class AuthService {
       throw new HttpException('کاربر وجود ندارد', 404);
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
-      throw new HttpException('پسورد صحیح نمی باشد', 404);
-    }
-    const token = await this.jwtService.signAsync({
+    const payload = {
       sub: user.id,
       mobile: user.mobile,
       role: user.role,
-    });
+    };
+
+    const token = await this.jwtService.signAsync(payload);
 
     await this.userDataAccess.updateJwtToken(token, user.id);
 
@@ -161,5 +146,9 @@ export class AuthService {
     } catch (error) {
       // handle error
     }
+  }
+
+  async deActiveUser(id: number) {
+    return await this.userDataAccess.deActiveUser(id);
   }
 }

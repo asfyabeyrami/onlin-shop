@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { AddressDataAccess } from 'src/dataAccess/address.dataAccess';
+import { ProvinceDataAccess } from 'src/dataAccess/province.dataAccess';
 
 @Injectable()
 export class AddressService {
-  constructor(private readonly addressDataAccess: AddressDataAccess) {}
+  constructor(
+    private readonly addressDataAccess: AddressDataAccess,
+    private readonly ProvinceDataAccess: ProvinceDataAccess,
+  ) {}
   async create(
     userId: number,
     cityId: number,
@@ -31,6 +35,14 @@ export class AddressService {
       zipCode,
     );
     return true;
+  }
+
+  async findAllCity(province: string) {
+    return await this.ProvinceDataAccess.findAllCity(province);
+  }
+
+  async findAllProvince() {
+    return await this.ProvinceDataAccess.findAllProvince();
   }
 
   async findAll(userId: number) {

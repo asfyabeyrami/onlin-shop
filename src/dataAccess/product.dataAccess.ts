@@ -8,7 +8,7 @@ export class ProductDataAccess {
     return Models.Product.tableName;
   }
   async findById(id: number): Promise<Models.Product> {
-    return Models.Product.findByPk(id);
+    return await Models.Product.findByPk(id);
   }
   async createProduct(
     adminId: number,
@@ -54,5 +54,59 @@ export class ProductDataAccess {
       count: 0,
     });
     return product;
+  }
+
+  async updateProduct(
+    id: number,
+    adminId: number,
+    brandId: number,
+    categoryId: number,
+    productName: string,
+    pCode: number,
+    count: number,
+    price: number,
+    discount: number,
+    picUrl: string,
+    description: string,
+  ) {
+    return await Models.Product.update(
+      {
+        adminId,
+        brandId,
+        categoryId,
+        productName,
+        pCode,
+        count,
+        price,
+        discount,
+        picUrl,
+        description,
+      },
+      { where: { id } },
+    );
+  }
+
+  async findAll(): Promise<Models.Product[]> {
+    return await Models.Product.findAll({ where: { isAvailable: true } });
+  }
+
+  async findAllAsCat(categoryName: string): Promise<Models.Product[]> {
+    const products = await Models.Product.findAll({
+      include: [
+        {
+          model: Models.Category,
+          where: {
+            title: categoryName,
+          },
+        },
+      ],
+    });
+
+    return products;
+  }
+
+  async remove(id: number): Promise<void> {
+    const Product = await this.findById(id);
+    return await Product.destroy();
   }
 }

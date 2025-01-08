@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CatDataAccess } from 'src/dataAccess/category.dataAccess';
+import { UpdateCategoryDto } from 'src/DTO/category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -8,19 +9,34 @@ export class CategoryService {
     return await this.catDataAccess.createCategory(adminId, title, fatherId);
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAllAsCat(category: string) {
+    const catProduct = await this.catDataAccess.findAllAsCat(category);
+    return catProduct;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findAll() {
+    return await this.catDataAccess.findAll();
   }
 
-  // update(id: number, updateCategoryDto: UpdateCategoryDto) {
-  //   return `This action updates a #${id} category`;
-  // }
+  async findOne(id: number) {
+    return await this.catDataAccess.findOne(id);
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async update(
+    id: number,
+    adminId: number,
+    updateCategoryDto: UpdateCategoryDto,
+  ) {
+    const { fatherId, title } = updateCategoryDto;
+    try {
+      await this.catDataAccess.updateCategory(id, adminId, fatherId, title);
+      return 'cat updated';
+    } catch (error) {
+      throw new Logger(error);
+    }
+  }
+
+  async remove(id: number) {
+    return await this.catDataAccess.remove(id);
   }
 }

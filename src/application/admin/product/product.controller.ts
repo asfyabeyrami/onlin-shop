@@ -9,11 +9,27 @@ import {
   HttpStatus,
   HttpCode,
   Req,
+  UseGuards,
+  Put,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ApiBody, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { CreateProductDto, NotAvailableProductDto } from 'src/DTO/product.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import {
+  CreateProductDto,
+  NotAvailableProductDto,
+  UpdateProductDto,
+} from 'src/DTO/product.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/common/eNums/role.enum';
+import { User } from 'src/decorators/getFromReq.decorators';
 
+@Roles(Role.ADMIN)
+@ApiBearerAuth()
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -31,8 +47,10 @@ export class ProductController {
   })
   @Post('createProduct')
   @HttpCode(HttpStatus.OK)
-  async createProduct(@Req() req, @Body() createProductDto: CreateProductDto) {
-    const adminId = req.id;
+  async createProduct(
+    @User('id') adminId: number,
+    @Body() createProductDto: CreateProductDto,
+  ) {
     const {
       brandId,
       categoryId,
@@ -75,18 +93,55 @@ export class ProductController {
     return true;
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.productService.findAll();
-  // }
+  @ApiOperation({
+    summary: 'گرفتن محصولات یک دسته‌بندی',
+  })
+  @Get('category/:category')
+  findByCategory(@Param('category') category: string) {
+    return this.productService.findAllAsCat(category);
+  }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.productService.findOne(+id);
-  // }
+  @ApiOperation({
+    summary: 'لیست محصولات',
+  })
+  @Get()
+  findAll() {
+    return this.productService.findAll();
+  }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.productService.remove(+id);
-  // }
+  @ApiOperation({
+    summary: ' گرفتن محصول با آی دی ',
+  })
+  @Get(':id')
+  findOne(@Param('id') id: number) {
+    return this.productService.findOne(id);
+  }
+
+  @ApiOperation({
+    summary: 'گرفتن محصول با اسم',
+  })
+  @Get('name/:productName')
+  findWithName(@Param('productName') productName: string) {
+    return this.productService.findWithName(productName);
+  }
+
+  @ApiOperation({
+    summary: 'آپدیت محصول ',
+  })
+  @Put(':id')
+  async update(
+    @Param('id') id: number,
+    @User('id') adminId: number,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return await this.productService.update(id, adminId, updateProductDto);
+  }
+
+  @ApiOperation({
+    summary: 'حذف محصول ',
+  })
+  @Delete(':id')
+  async remove(@Param('id') id: number) {
+    return await this.productService.remove(+id);
+  }
 }

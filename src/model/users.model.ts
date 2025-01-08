@@ -46,12 +46,6 @@ export class User extends Model {
 
   @Column({
     allowNull: false,
-    type: Sequelize.STRING,
-  })
-  password: string;
-
-  @Column({
-    allowNull: false,
     type: Sequelize.BIGINT,
     unique: true,
   })

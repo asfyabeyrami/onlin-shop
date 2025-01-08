@@ -16,6 +16,16 @@ export class CreateCityDto {
   city: string;
 }
 
+export class UpdateCityDto {
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  provinceId: number;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  city: string;
+}
+
 export class CreateAddressDto {
   @IsNotEmpty()
   @ApiProperty({ type: String })

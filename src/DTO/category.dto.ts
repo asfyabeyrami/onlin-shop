@@ -10,3 +10,13 @@ export class CreateCategoryDto {
   @ApiProperty({ type: String })
   fatherId: number;
 }
+
+export class UpdateCategoryDto {
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  title: string;
+
+  @IsOptional()
+  @ApiProperty({ type: String })
+  fatherId: number;
+}

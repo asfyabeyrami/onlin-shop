@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { BrandDataAccess } from 'src/dataAccess/brand.dataAccess';
+import { UpdateBrandDto } from 'src/DTO/brand.dto';
 
 @Injectable()
 export class BrandService {
@@ -18,19 +19,35 @@ export class BrandService {
     );
   }
 
-  findAll() {
-    return `This action returns all brand`;
+  async findAll() {
+    return await this.brandDataAccess.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} brand`;
+  async findOne(id: number) {
+    return await this.brandDataAccess.findById(id);
   }
 
-  // update(id: number, updateBrandDto: UpdateBrandDto) {
-  //   return `This action updates a #${id} brand`;
-  // }
+  async update(id: number, adminId: number, updateBrandDto: UpdateBrandDto) {
+    const { brandName, picUrl, description } = updateBrandDto;
+    try {
+      await this.brandDataAccess.updateBrand(
+        id,
+        adminId,
+        brandName,
+        picUrl,
+        description,
+      );
+      return 'brand updated';
+    } catch (error) {
+      throw new Logger(error);
+    }
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} brand`;
+  async findWithName(brandName: string) {
+    return await this.brandDataAccess.findByName(brandName);
+  }
+
+  async remove(id: number) {
+    return await this.brandDataAccess.remove(id);
   }
 }

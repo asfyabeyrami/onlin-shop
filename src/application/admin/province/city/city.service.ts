@@ -1,28 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { AdminDataAccess } from 'src/dataAccess/admin.dataAccess';
 import { ProvinceDataAccess } from 'src/dataAccess/province.dataAccess';
-import { CreateCityDto } from 'src/DTO/address.dto';
+import { CreateCityDto, UpdateCityDto } from 'src/DTO/address.dto';
 
 @Injectable()
 export class CityService {
-  constructor(private readonly provinceDataAccess: ProvinceDataAccess) {}
-  async create(createCityDto: CreateCityDto) {
+  constructor(
+    private readonly provinceDataAccess: ProvinceDataAccess,
+    private readonly adminDataAccess: AdminDataAccess,
+  ) {}
+  async create(adminId: number, createCityDto: CreateCityDto) {
     const { provinceId, city } = createCityDto;
+    const checkAdmin = await this.adminDataAccess.findById(adminId);
+    if (!checkAdmin) {
+      throw new UnauthorizedException('دسترسی ندارید');
+    }
     return await this.provinceDataAccess.createCity(provinceId, city);
   }
 
-  findAll() {
-    return `This action returns all city`;
+  async findAll() {
+    return await this.provinceDataAccess.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} city`;
-  }
-
-  // update(id: number, updateCityDto: UpdateCityDto) {
-  //   return `This action updates a #${id} city`;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} city`;
+  async remove(id: number) {
+    return await this.provinceDataAccess.remove(id);
   }
 }

@@ -14,3 +14,17 @@ export class CreateBrandDto {
   @ApiProperty({ type: String })
   description: string;
 }
+
+export class UpdateBrandDto {
+  @IsOptional()
+  @ApiProperty({ type: String })
+  brandName: string;
+
+  @IsNotEmpty()
+  @ApiProperty({ type: String })
+  picUrl: string;
+
+  @IsOptional()
+  @ApiProperty({ type: String })
+  description: string;
+}

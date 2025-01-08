@@ -10,19 +10,11 @@ export class ProvinceService {
     return await this.provinceDataAccess.createProvince(adminId, province);
   }
 
-  findAll() {
-    return `This action returns all province`;
+  async findAll() {
+    return await this.provinceDataAccess.findAllProvince();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} province`;
-  }
-
-  // update(id: number, updateProvinceDto: UpdateProvinceDto) {
-  //   return `This action updates a #${id} province`;
-  // }
-
-  remove(id: number) {
-    return `This action removes a #${id} province`;
+  async remove(id: number) {
+    return await this.provinceDataAccess.removeProvince(id);
   }
 }

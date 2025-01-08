@@ -25,4 +25,46 @@ export class ProvinceDataAccess {
     });
     return result;
   }
+
+  async findAll(): Promise<Models.City[]> {
+    return await Models.City.findAll();
+  }
+
+  async findAllCity(province: string) {
+    const city = await Models.Province.findAll({
+      where: {
+        province: province,
+      },
+      include: [
+        {
+          model: Models.City,
+          attributes: ['city'],
+        },
+      ],
+    });
+
+    return city;
+  }
+
+  async findAllProvince(): Promise<Models.Province[]> {
+    return await Models.Province.findAll();
+  }
+
+  async findById(id: number): Promise<Models.City> {
+    return await Models.City.findByPk(id);
+  }
+
+  async findByIdProvince(id: number): Promise<Models.Province> {
+    return await Models.Province.findByPk(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    const city = await this.findById(id);
+    return await city.destroy();
+  }
+
+  async removeProvince(id: number): Promise<void> {
+    const province = await this.findByIdProvince(id);
+    return await province.destroy();
+  }
 }

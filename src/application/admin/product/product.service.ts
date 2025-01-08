@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ProductDataAccess } from 'src/dataAccess/product.dataAccess';
+import { UpdateProductDto } from 'src/DTO/product.dto';
 
 @Injectable()
 export class ProductService {
@@ -34,19 +35,59 @@ export class ProductService {
     return this.productDataAccess.notAvailable(productName);
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll() {
+    return await this.productDataAccess.findAll();
+  }
+  async findAllAsCat(category: string) {
+    const catProduct = await this.productDataAccess.findAllAsCat(category);
+    return catProduct;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  async findOne(id: number) {
+    return await this.productDataAccess.findById(id);
   }
 
-  // update(id: number, updateProductDto: UpdateProductDto) {
-  //   return `This action updates a #${id} product`;
-  // }
+  async findWithName(productName: string) {
+    return await this.productDataAccess.findByName(productName);
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async update(
+    id: number,
+    adminId: number,
+    updateProductDto: UpdateProductDto,
+  ) {
+    const {
+      brandId,
+      categoryId,
+      productName,
+      pCode,
+      count,
+      price,
+      discount,
+      picUrl,
+      description,
+    } = updateProductDto;
+    try {
+      await this.productDataAccess.updateProduct(
+        id,
+        adminId,
+        brandId,
+        categoryId,
+        productName,
+        pCode,
+        count,
+        price,
+        discount,
+        picUrl,
+        description,
+      );
+      return 'product updated';
+    } catch (error) {
+      throw new Logger(error);
+    }
+  }
+
+  async remove(id: number) {
+    return await this.productDataAccess.remove(id);
   }
 }
