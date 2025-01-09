@@ -55,4 +55,22 @@ export class CommentDataAccess {
     const comment = await this.findById(id);
     return await comment.destroy();
   }
+
+  async findByproductId(id: number): Promise<Models.Product> {
+    return await Models.Product.findOne({
+      where: { id },
+      include: [
+        {
+          model: Models.Comment,
+          attributes: ['id', 'comment', 'isPublish'],
+          include: [
+            {
+              model: Models.User,
+              attributes: ['name'],
+            },
+          ],
+        },
+      ],
+    });
+  }
 }

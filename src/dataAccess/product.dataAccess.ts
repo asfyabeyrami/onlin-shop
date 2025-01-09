@@ -17,8 +17,16 @@ export class ProductDataAccess {
       include: [
         {
           model: Models.Comment,
+          required: false,
+          separate: true,
+          where: { isPublish: true },
           attributes: ['comment'],
-          include: [{ model: Models.User, attributes: ['name'] }],
+          include: [
+            {
+              model: Models.User,
+              attributes: ['name'],
+            },
+          ],
         },
       ],
     });

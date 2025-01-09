@@ -26,24 +26,24 @@ export class AdminDto {
 export class RegisterAdminDto {
   @IsNotEmpty({ message: 'نام کاربری نمی‌تواند خالی باشد' })
   @IsString()
+  @ApiProperty({ type: String })
   @Length(4, 20, { message: 'نام کاربری باید بین ۴ تا ۲۰ کاراکتر باشد' })
   userName: string;
 
   @IsNotEmpty({ message: 'رمز عبور نمی‌تواند خالی باشد' })
   @IsString()
-  @Length(8, 20, { message: 'رمز عبور باید بین ۸ تا ۲۰ کاراکتر باشد' })
-  @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'رمز عبور باید شامل حروف بزرگ، کوچک و اعداد باشد',
-  })
+  @ApiProperty({ type: String })
   password: string;
 }
 
 export class LoginAdminDto {
   @IsNotEmpty({ message: 'نام کاربری نمی‌تواند خالی باشد' })
   @IsString()
+  @ApiProperty({ type: String })
   userName: string;
 
   @IsNotEmpty({ message: 'رمز عبور نمی‌تواند خالی باشد' })
   @IsString()
+  @ApiProperty({ type: String })
   password: string;
 }

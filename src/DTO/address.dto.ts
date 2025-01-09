@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString, Length, IsPostalCode, Min } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  Length,
+  IsPostalCode,
+  Min,
+} from 'class-validator';
 
 export class CreateProvinceDto {
   @IsNotEmpty()
@@ -29,16 +36,19 @@ export class UpdateCityDto {
 export class CreateAddressDto {
   @IsNotEmpty({ message: 'شناسه شهر نمی‌تواند خالی باشد' })
   @IsNumber()
+  @ApiProperty({ type: String })
   @Min(1)
   cityId: number;
 
   @IsNotEmpty({ message: 'آدرس نمی‌تواند خالی باشد' })
   @IsString()
+  @ApiProperty({ type: String })
   @Length(10, 500, { message: 'آدرس باید بین ۱۰ تا ۵۰۰ کاراکتر باشد' })
   address: string;
 
   @IsNotEmpty({ message: 'کد پستی نمی‌تواند خالی باشد' })
   @IsPostalCode('IR', { message: 'لطفا یک کد پستی معتبر ایران وارد کنید' })
+  @ApiProperty({ type: String })
   zipCode: number;
 }
 
