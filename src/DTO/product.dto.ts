@@ -117,7 +117,8 @@ export class CreateCommentDto {
 
   @IsNotEmpty({ message: 'متن نظر نمی‌تواند خالی باشد' })
   @IsString()
-  @Length(10, 1000, { message: 'متن نظر باید بین ۱۰ تا ۱۰۰۰ کاراکتر باشد' })
+  @ApiProperty({ type: String })
+  @Length(2, 1000, { message: 'متن نظر باید بین 2 تا ۱۰۰۰ کاراکتر باشد' })
   comment: string;
 }
 

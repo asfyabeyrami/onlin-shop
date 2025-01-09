@@ -17,7 +17,7 @@ import { User } from 'src/decorators/getFromReq.decorators';
 @ApiTags('userComment')
 @ApiBearerAuth()
 @Roles(Role.USER)
-@Controller('comment')
+@Controller('user/comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 

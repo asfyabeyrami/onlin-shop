@@ -37,18 +37,9 @@ async function bootstrap() {
     .addTag('product', 'محصولات')
     .addTag('category', 'دسته بندی')
     .addTag('userComment', 'کامنت ها')
+    .addTag('adminComment', 'مدیریت کامنت ها')
 
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter JWT token',
-        in: 'header',
-      },
-      'JWT-auth',
-    )
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
